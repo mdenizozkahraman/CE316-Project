@@ -34,27 +34,33 @@ public class ResultController implements Initializable {
         backButton.setOnAction(actionEvent -> {
             try {
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         });
 
         recompileButton.setOnAction(actionEvent -> {
-           // table.
+            table.getColumns().clear();
             hws.clear();
-            //File f = new File();
+            File file = new File(Config.getInstance().assignmentPath + "/finish.txt");
+            if (file.exists()) {
+                if (file.delete()) {
+                    compile();
+                }
+            } else {
+                compile();
+            }
         });
     }
-
 
 
     private void compile() {
     }
 
-    private void resultFileImport(File file){
-        try(Scanner s = new Scanner(file)) {
+    private void resultFileImport(File file) {
+        try (Scanner s = new Scanner(file)) {
             StringBuilder submission = new StringBuilder();
-            while (s.hasNext()){
+            while (s.hasNext()) {
                 String line = s.nextLine();
                 submission.append(line);
                 if (line.endsWith("$")) {
@@ -74,7 +80,7 @@ public class ResultController implements Initializable {
                 }
             }
         } catch (FileNotFoundException e) {
-           e.printStackTrace();
+            e.printStackTrace();
         }
     }
 
@@ -91,10 +97,7 @@ public class ResultController implements Initializable {
         }
     }
 
-    private void setupTable() {}
-
-    private void handleRowSelection() {
-
+    private void setupTable() {
     }
 
 }
