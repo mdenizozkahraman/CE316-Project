@@ -1,16 +1,18 @@
-package com.example.berkdeneme;
 
+package com.example.berkdeneme;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 
-import javafx.scene.control.*;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-
 public class MainController implements Initializable {
     @FXML
-    private Button createButton;
+    private Button createNewButton;
     @FXML
     private Button helpButton;
     @FXML
@@ -18,19 +20,23 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        createButton.setOnAction(actionEvent -> {
+        createNewButton.setOnAction(actionEvent -> {
             try {
-
-            }catch (Exception e){
+                com.example.berkdeneme.Main.showCreateProject();
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         });
 
+
         helpButton.setOnAction(actionEvent -> {
-            String helpText = "INTEGRATED ASSIGNMENT ENVIRONMENT";
+
 
         });
 
-        exitButton.setOnAction(actionEvent -> System.exit(0));
+
+        exitButton.setOnAction(actionEvent -> Platform.exit());
     }
+
+
 }

@@ -1,36 +1,39 @@
 package com.example.berkdeneme;
 
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Objects;
 
 public class Main extends Application {
-    public static Stage stage;
-
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
+        Parent root = FXMLLoader.load(Main.class.getResource("scene1.fxml"));
+        Scene scene = new Scene(root);
         stage.setTitle("Integrated Environment System");
         stage.setScene(scene);
         stage.show();
+    }
+    public static void showCreateProject() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Main.class.getResource("createProject.fxml"));
+        BorderPane createProject = loader.load();
+        Stage createProjectStage = new Stage();
+        createProjectStage.setTitle("Create Project");
+        createProjectStage.initModality(Modality.WINDOW_MODAL);
+        // createProjectStage.initOwner();
+        Scene scene = new Scene(createProject);
+        createProjectStage.setScene(scene);
+        createProjectStage.showAndWait();
+
     }
 
     public static void main(String[] args) {
         launch();
     }
-
-    public static void changeScene(String fxml,int height, int width) throws IOException{
-        Parent scene = FXMLLoader.load(Objects.requireNonNull(Application.class.getResource(fxml)));
-        stage.setHeight(height);
-        stage.setWidth(width);
-        stage.getScene().setRoot(scene);
-    }
-
 }
