@@ -1,14 +1,13 @@
-package com.example.berkdeneme.Compilers;
+package com.example.deneme.Compilers;
 
-import com.example.berkdeneme.Compilers.CCompiler;
-import com.example.berkdeneme.Result;
+import com.example.deneme.Result;
 
 
 import java.io.File;
 
 public class TestCompiler {
     public static void main(String[] args) {
-        File workingDirectory = new File("src/main/java/com/example/berkdeneme/Compilers/main.c");
+        File workingDirectory = new File("src/main/java/com/example/deneme/Compilers/main.c");
 
         CCompiler compiler = new CCompiler(workingDirectory);
 

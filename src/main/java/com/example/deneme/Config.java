@@ -1,4 +1,4 @@
-package com.example.berkdeneme;
+package com.example.deneme;
 
 enum Language{
     C,JAVA,PYTHON
