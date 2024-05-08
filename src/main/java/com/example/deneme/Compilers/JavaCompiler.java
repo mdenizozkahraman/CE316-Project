@@ -1,4 +1,4 @@
-package com.example.berkdeneme.Compilers;
+package com.example.deneme.Compilers;
 
 import java.io.File;
 

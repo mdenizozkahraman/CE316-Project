@@ -1,6 +1,6 @@
-package com.example.berkdeneme.Compilers;
+package com.example.deneme.Compilers;
 
-import com.example.berkdeneme.Result;
+import com.example.deneme.Result;
 
 import java.io.File;
 
