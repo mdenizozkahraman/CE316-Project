@@ -17,14 +17,32 @@ import java.util.ResourceBundle;
 
 public class ConfigController implements Initializable{
 
-
+    @FXML
+    private Button runCommandArgsChooser;
+    @FXML
+    private Button expectedoutcomeChooser;
+    @FXML
+    private Button fileChooser;
+    @FXML
+    private Label fileChooserLabel;
+    @FXML
+    private TextField pathtextField;
     @FXML
     private ChoiceBox<String> mychoiceBox;
     @FXML
     private Button cancelButton;
     @FXML
     private Button okeyButton;
-
+    @FXML
+    private TextField compilerPathfield;
+    @FXML
+    private TextField compilerInterpreterargsfield;
+    @FXML
+    private TextField runcommandfield;
+    @FXML
+    private TextField runcommandArgspathfield;
+    @FXML
+    private TextField expectedOutcomepathfield;
 
     @FXML
     private String[] langugages = {"C","Python","JAVA"};
@@ -32,29 +50,47 @@ public class ConfigController implements Initializable{
     @Override
     public void initialize(URL arg0, ResourceBundle arg1){
         mychoiceBox.getItems().addAll(langugages);
+        mychoiceBox.getSelectionModel().selectFirst();
+
+        if(Config.getInstance().COMPILERPATH != null){
+            compilerPathfield.setText(Config.getInstance().COMPILERPATH);
+            compilerInterpreterargsfield.setText(Config.getInstance().COMPILERINTERPRETERARGS);
+            runcommandfield.setText(Config.getInstance().RUNCOMMAND);
+            runcommandArgspathfield.setText(Config.getInstance().RUNCOMMANDARGS);
+            expectedOutcomepathfield.setText(Config.getInstance().EXPECTEDOUTCOME);
+
+            Language selectedLanguage = Config.getInstance().SELECTEDLANGUAGE;
+            switch (selectedLanguage.toString()) {
+                case "C":
+                    mychoiceBox.getSelectionModel().select(1);
+                    break;
+                case "JAVA":
+                    mychoiceBox.getSelectionModel().select(2);
+                    break;
+                case "PYTHON":
+                    mychoiceBox.getSelectionModel().select(3);
+                    break;
+                default:
+                    // Handle default case if needed
+                    break;
+            }
+
+        }
+
+
+
+
+
+
+
+
 
     }
 
 
 
 
-    @FXML
-    private Button fileChooser;
-    @FXML
-    private Label fileChooserLabel;
 
-    @FXML
-    private TextField pathtextField;
-
-
-
-    /*
-   public void fileChooser(ActionEvent event){
-       FileChooser fc = new FileChooser();
-       fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Word Files ",listfile));
-       File f = fc.showOpenDialog(null);
-    }
-*/
     @FXML
     public void fileChooser(ActionEvent event) {
         Node source = (Node) event.getSource();

@@ -10,16 +10,18 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.deneme.ConfigController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.democe316.ConfigController">
     <bottom>
         <HBox alignment="CENTER" prefHeight="57.0" prefWidth="600.0" spacing="10.0" BorderPane.alignment="CENTER">
             <children>
-                <Button mnemonicParsing="false" prefWidth="100.0" text="OK">
+                <Button mnemonicParsing="false" text="Save Configuration" />
+                <Button mnemonicParsing="false" text="Delete Configuration">
                     <HBox.margin>
                         <Insets />
                     </HBox.margin>
                 </Button>
-                <Button mnemonicParsing="false" prefWidth="100.0" text="CANCEL">
+                <Button mnemonicParsing="false" text="Run" />
+                <Button mnemonicParsing="false" text="Cancel">
                     <HBox.margin>
                         <Insets />
                     </HBox.margin>
@@ -35,25 +37,53 @@
                         <Font size="18.0" />
                     </font>
                     <HBox.margin>
-                        <Insets top="30.0" />
+                        <Insets left="20.0" top="30.0" />
                     </HBox.margin>
                 </Label>
                 <ChoiceBox fx:id="mychoiceBox" prefWidth="90.0">
                     <HBox.margin>
-                        <Insets top="30.0" />
+                        <Insets left="10.0" top="30.0" />
                     </HBox.margin>
                 </ChoiceBox>
+                <Label text="Integrated Assignment Environment">
+                    <HBox.margin>
+                        <Insets left="100.0" top="10.0" />
+                    </HBox.margin>
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </Label>
             </children>
         </HBox>
     </top>
     <center>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>
-                <Button layoutX="274.0" layoutY="28.0" mnemonicParsing="false" onAction="#fileChooser" text="..." />
-                <TextField fx:id="pathtextField" layoutX="94.0" layoutY="27.0" />
+                <Button layoutX="281.0" layoutY="28.0" mnemonicParsing="false" onAction="#fileChooser" text="..." />
+                <TextField fx:id="pathtextField" layoutX="106.0" layoutY="28.0" />
                 <Label layoutX="14.0" layoutY="32.0" text="Choose File" />
-                <TextField layoutX="94.0" layoutY="71.0" />
-                <TextField layoutX="94.0" layoutY="122.0" />
+                <TextField fx:id="compilerPathfield" layoutX="106.0" layoutY="72.0" />
+                <TextField fx:id="compilerInterpreterargsfield" layoutX="106.0" layoutY="123.0" />
+                <Label layoutX="14.0" layoutY="76.0" text="Compiler" />
+                <Label layoutX="14.0" layoutY="127.0" text="Compiler" />
+                <Label layoutX="14.0" layoutY="89.0" text="Interpreter Path">
+                    <font>
+                        <Font size="9.0" />
+                    </font>
+                </Label>
+                <Label layoutX="14.0" layoutY="140.0" text="Interpreter Args">
+                    <font>
+                        <Font size="9.0" />
+                    </font>
+                </Label>
+                <Label layoutX="14.0" layoutY="176.0" text="Run Command" />
+                <TextField fx:id="runcommandfield" layoutX="106.0" layoutY="172.0" />
+                <Label layoutX="312.0" layoutY="78.0" text="Run Command Args" />
+                <Label layoutX="312.0" layoutY="128.0" text="Expected Outcome" />
+                <TextField fx:id="runcommandArgspathfield" layoutX="435.0" layoutY="74.0" prefHeight="26.0" prefWidth="110.0" />
+                <TextField fx:id="expectedOutcomepathfield" layoutX="435.0" layoutY="124.0" prefHeight="26.0" prefWidth="110.0" />
+                <Button fx:id="runCommandArgsChooser" layoutX="555.0" layoutY="74.0" mnemonicParsing="false" onAction="#fileChooser" prefHeight="26.0" prefWidth="29.0" text="Button" />
+                <Button fx:id="expectedoutcomeChooser" layoutX="555.0" layoutY="124.0" mnemonicParsing="false" onAction="#fileChooser" prefHeight="26.0" prefWidth="29.0" text="Button" />
             </children>
         </AnchorPane>
     </center>

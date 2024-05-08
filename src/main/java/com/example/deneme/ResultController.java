@@ -45,7 +45,7 @@ public class ResultController implements Initializable {
         recompileButton.setOnAction(actionEvent -> {
             table.getColumns().clear();
             hws.clear();
-            File file = new File(Config.getInstance().assignmentPath + "/finish.txt");
+            File file = new File(Config.getInstance().COMPILERPATH + "/finish.txt");
             if (file.exists()) {
                 if (file.delete()) {
                     compile();
@@ -58,17 +58,17 @@ public class ResultController implements Initializable {
 
 
     private void compile() {
-        File f = new File(Config.getInstance().assignmentPath + "/results.txt");
+        File f = new File(Config.getInstance().COMPILERPATH + "/results.txt");
         if (f.exists()) {
             resultFileImport(f);
             setupTable();
         } else {
             try {
-                File[] submissions = new File(Config.getInstance().assignmentPath).listFiles();
+                File[] submissions = new File(Config.getInstance().COMPILERPATH).listFiles();
                 for (File file : submissions) {
                     if (!file.isFile()) { // if it is a directory
                         Compiler compiler;
-                        switch (Config.getInstance().selectedLanguage) {
+                        switch (Config.getInstance().SELECTEDLANGUAGE) {
                             case C:
                                 compiler = new CCompiler(file);
                                 break;
