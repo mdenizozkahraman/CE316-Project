@@ -1,7 +1,6 @@
 
-package com.example.berkdeneme;
+package com.example.deneme;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -22,7 +21,7 @@ public class MainController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         createNewButton.setOnAction(actionEvent -> {
             try {
-                com.example.berkdeneme.Main.showCreateProject();
+                com.example.deneme.Main.showCreateProject();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

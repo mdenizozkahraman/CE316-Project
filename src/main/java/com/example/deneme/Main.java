@@ -1,4 +1,4 @@
-package com.example.berkdeneme;
+package com.example.deneme;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
