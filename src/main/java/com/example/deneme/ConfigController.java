@@ -84,7 +84,7 @@ public class ConfigController implements Initializable{
     }
 
     @FXML
-    public void directoryChooser(ActionEvent event) {
+    public void pathDirectoryChooser(ActionEvent event) {
         Node source = (Node) event.getSource();
         Window window = source.getScene().getWindow();
 
@@ -94,6 +94,23 @@ public class ConfigController implements Initializable{
         if (selectedDirectory != null) {
             String directoryPath = selectedDirectory.getAbsolutePath();
             pathtextField.setText(directoryPath);
+            System.out.println("Selected directory path: " + directoryPath);
+        } else {
+            System.out.println("No directory selected");
+        }
+    }
+
+    @FXML
+    public void expectedDirectoryChooser(ActionEvent event) {
+        Node source = (Node) event.getSource();
+        Window window = source.getScene().getWindow();
+
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        File selectedDirectory = directoryChooser.showDialog(window);
+
+        if (selectedDirectory != null) {
+            String directoryPath = selectedDirectory.getAbsolutePath();
+            expectedOutcomepathfield.setText(directoryPath);
             System.out.println("Selected directory path: " + directoryPath);
         } else {
             System.out.println("No directory selected");
@@ -132,21 +149,43 @@ public class ConfigController implements Initializable{
     @FXML
     public void runButtonClicked(ActionEvent event) {
         if (mychoiceBox.getSelectionModel().getSelectedItem() == "C"){
-            compileAndRunC();
+            String runOutput = compileAndRunC(pathtextField.getText());
+            String expectedOutput = compileAndRunC(expectedOutcomepathfield.getText());
+
+            if (runOutput.equals(expectedOutput)) {
+                System.out.println("Correct");
+            } else {
+                System.out.print("Incorrect");
+            }
+
         }
         else if (mychoiceBox.getSelectionModel().getSelectedItem() == "Python"){
-            runPythonInterpreter();
+            String runOutput = runPythonInterpreter(pathtextField.getText());
+            String expectedOutput = runPythonInterpreter(expectedOutcomepathfield.getText());
+
+            if (runOutput.equals(expectedOutput)) {
+                System.out.println("Correct");
+            } else {
+                System.out.print("Incorrect");
+            }
         }
 
         if (mychoiceBox.getSelectionModel().getSelectedItem() == "JAVA"){
-            compileAndRunJava();
+            String runOutput = compileAndRunJava(pathtextField.getText());
+            String expectedOutput = compileAndRunJava(expectedOutcomepathfield.getText());
+
+            if (runOutput.equals(expectedOutput)) {
+                System.out.println("Correct");
+            } else {
+                System.out.print("Incorrect");
+            }
         }
 
 
     }
     @FXML
-    public void runPythonInterpreter() {
-        String filePath = pathtextField.getText();
+    public String runPythonInterpreter(String filePath) {
+
 
         File workingDirectory = new File(filePath);
 
@@ -155,18 +194,20 @@ public class ConfigController implements Initializable{
         try {
             Result runResult = pythonInterpreter.run(PythonInterpreter.COMPILER_PATH, PythonInterpreter.ARGS);
 
-            System.out.println("Run Output: ");
-            System.out.print(runResult.getOutput());
 
+
+            return runResult.getOutput();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return "-1";
     }
 
     @FXML
-    public void compileAndRunJava() {
-        String filePath = pathtextField.getText();
+    public String compileAndRunJava(String filePath) {
+
+
 
         File workingDirectory = new File(filePath);
 
@@ -180,18 +221,19 @@ public class ConfigController implements Initializable{
             if (compileResult.getStatus() == 0) {
                 Result runResult = javaCompiler.run(JavaCompiler.RUN_COMMAND, "Test");
 
-                System.out.println("Run Output: ");
-                System.out.print(runResult.getOutput());
+
+                return runResult.getOutput();
 
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return "-2";
     }
 
     @FXML
-    public void compileAndRunC() {
-        String filePath = pathtextField.getText();
+    public String compileAndRunC(String filePath) {
+
 
         File workingDirectory = new File(filePath);
 
@@ -205,13 +247,14 @@ public class ConfigController implements Initializable{
             if (compileResult.getStatus() == 0) {
                 Result runResult = cCompiler.run(workingDirectory + CCompiler.RUN_COMMAND, "");
 
-                System.out.println("Run Output: ");
-                System.out.print(runResult.getOutput());
+
+                return runResult.getOutput();
 
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return "-3";
 
     }
 
