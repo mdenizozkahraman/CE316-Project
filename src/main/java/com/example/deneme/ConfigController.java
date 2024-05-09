@@ -1,5 +1,9 @@
 package com.example.deneme;
 
+import com.example.deneme.Compilers.CCompiler;
+import com.example.deneme.Compilers.JavaCompiler;
+import com.example.deneme.Compilers.PythonInterpreter;
+import com.example.deneme.Compilers.TestCompiler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -63,6 +67,7 @@ public class ConfigController implements Initializable{
             switch (selectedLanguage.toString()) {
                 case "C":
                     mychoiceBox.getSelectionModel().select(1);
+                    compilerPathfield.setText("gcc");
                     break;
                 case "JAVA":
                     mychoiceBox.getSelectionModel().select(2);
@@ -77,15 +82,42 @@ public class ConfigController implements Initializable{
 
         }
 
-
-
-
-
-
-
-
-
     }
+
+
+
+    public void choiceBoxChanged(ActionEvent event) {
+
+
+        String selectedLanguage = mychoiceBox.getSelectionModel().getSelectedItem();
+
+        switch (selectedLanguage) {
+            case "C":
+                compilerPathfield.setText(CCompiler.COMPILER_PATH);
+                compilerInterpreterargsfield.setText(CCompiler.ARGS);
+                runcommandfield.setText(CCompiler.RUN_COMMAND);
+                break;
+            case "JAVA":
+                compilerPathfield.setText(JavaCompiler.COMPILER_PATH);
+                compilerInterpreterargsfield.setText("");
+                runcommandfield.setText(JavaCompiler.RUN_COMMAND);
+                break;
+            case "Python":
+                compilerPathfield.setText(PythonInterpreter.COMPILER_PATH);
+                compilerInterpreterargsfield.setText(PythonInterpreter.ARGS);
+                runcommandfield.setText("");
+
+                break;
+            default:
+                break;
+        }
+    }
+
+    @FXML
+    public void runButtonClicked(ActionEvent event) {
+        System.out.println("Deniz");
+    }
+
 
 
 
