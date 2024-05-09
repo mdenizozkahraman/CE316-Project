@@ -3,7 +3,6 @@ package com.example.deneme;
 import com.example.deneme.Compilers.CCompiler;
 import com.example.deneme.Compilers.JavaCompiler;
 import com.example.deneme.Compilers.PythonInterpreter;
-import com.example.deneme.Compilers.TestCompiler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 
@@ -67,7 +67,6 @@ public class ConfigController implements Initializable{
             switch (selectedLanguage.toString()) {
                 case "C":
                     mychoiceBox.getSelectionModel().select(1);
-                    compilerPathfield.setText("gcc");
                     break;
                 case "JAVA":
                     mychoiceBox.getSelectionModel().select(2);
@@ -82,6 +81,23 @@ public class ConfigController implements Initializable{
 
         }
 
+    }
+
+    @FXML
+    public void directoryChooser(ActionEvent event) {
+        Node source = (Node) event.getSource();
+        Window window = source.getScene().getWindow();
+
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        File selectedDirectory = directoryChooser.showDialog(window);
+
+        if (selectedDirectory != null) {
+            String directoryPath = selectedDirectory.getAbsolutePath();
+            pathtextField.setText(directoryPath);
+            System.out.println("Selected directory path: " + directoryPath);
+        } else {
+            System.out.println("No directory selected");
+        }
     }
 
 
@@ -115,8 +131,91 @@ public class ConfigController implements Initializable{
 
     @FXML
     public void runButtonClicked(ActionEvent event) {
-        System.out.println("Deniz");
+        if (mychoiceBox.getSelectionModel().getSelectedItem() == "C"){
+            compileAndRunC();
+        }
+        else if (mychoiceBox.getSelectionModel().getSelectedItem() == "Python"){
+            runPythonInterpreter();
+        }
+
+        if (mychoiceBox.getSelectionModel().getSelectedItem() == "JAVA"){
+            compileAndRunJava();
+        }
+
+
     }
+    @FXML
+    public void runPythonInterpreter() {
+        String filePath = pathtextField.getText();
+
+        File workingDirectory = new File(filePath);
+
+        PythonInterpreter pythonInterpreter = new PythonInterpreter(workingDirectory);
+
+        try {
+            Result runResult = pythonInterpreter.run(PythonInterpreter.COMPILER_PATH, PythonInterpreter.ARGS);
+
+            System.out.println("Run Output: ");
+            System.out.print(runResult.getOutput());
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void compileAndRunJava() {
+        String filePath = pathtextField.getText();
+
+        File workingDirectory = new File(filePath);
+
+        JavaCompiler javaCompiler = new JavaCompiler(workingDirectory);
+
+        try {
+            Result compileResult = javaCompiler.compile(JavaCompiler.COMPILER_PATH, "Test.java");
+
+
+
+            if (compileResult.getStatus() == 0) {
+                Result runResult = javaCompiler.run(JavaCompiler.RUN_COMMAND, "Test");
+
+                System.out.println("Run Output: ");
+                System.out.print(runResult.getOutput());
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void compileAndRunC() {
+        String filePath = pathtextField.getText();
+
+        File workingDirectory = new File(filePath);
+
+        CCompiler cCompiler = new CCompiler(workingDirectory);
+
+        try {
+            Result compileResult = cCompiler.compile(CCompiler.COMPILER_PATH, CCompiler.ARGS);
+
+
+
+            if (compileResult.getStatus() == 0) {
+                Result runResult = cCompiler.run(workingDirectory + CCompiler.RUN_COMMAND, "");
+
+                System.out.println("Run Output: ");
+                System.out.print(runResult.getOutput());
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
 
 
 
