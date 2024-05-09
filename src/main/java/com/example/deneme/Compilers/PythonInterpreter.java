@@ -6,7 +6,7 @@ import java.io.File;
 
 
 public class PythonInterpreter extends Compiler {
-    public static final String COMPILER_PATH = "python3";
+    public static final String COMPILER_PATH = "python";
     public static final String ARGS = "PythonTest.py";
 
     public PythonInterpreter(File workingDirectory) {

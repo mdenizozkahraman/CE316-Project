@@ -61,11 +61,11 @@ public class Database {
         ResultSet rs = stat.executeQuery(sql);
 
         if (rs.next()) {
-            config.compilerPath = rs.getString("COMPILER_PATH");
-            config.args = rs.getString("ARGS");
-            config.expected = rs.getString("EXPECTED");
-            config.run = rs.getString("RUN_COMMAND");
-            config.selectedLanguage = Language.valueOf(rs.getString("SELECTED_LANGUAGE"));
+            config.COMPILERPATH = rs.getString("COMPILER_PATH");
+            config.COMPILERINTERPRETERARGS = rs.getString("ARGS");
+            config.EXPECTEDOUTCOME = rs.getString("EXPECTED");
+            config.RUNCOMMAND = rs.getString("RUN_COMMAND");
+            config.SELECTEDLANGUAGE = Language.valueOf(rs.getString("SELECTED_LANGUAGE"));
         }
         rs.close();
         stat.close();
