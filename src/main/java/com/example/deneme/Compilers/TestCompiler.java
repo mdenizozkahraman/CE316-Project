@@ -1,11 +1,13 @@
 package com.example.deneme.Compilers;
 
 import com.example.deneme.Result;
+import com.example.deneme.Compilers.Compiler;
 
 import java.io.File;
+import java.io.IOException;
 
 public class TestCompiler {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         File workingDirectory = new File("TestFiles");
 
         System.out.println("---------------JAVA PART---------------");
@@ -134,6 +136,8 @@ public class TestCompiler {
         }
 
         System.out.println("---------------C++ PART FINSH---------------");
+
+        System.out.println(Compiler.Comparator("main"));
 
     }
 }

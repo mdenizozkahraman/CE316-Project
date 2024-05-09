@@ -3,11 +3,11 @@ package com.example.deneme.Compilers;
 
 import com.example.deneme.Result;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStreamReader;
+import java.io.*;
 
 public abstract class Compiler {
+
+
     protected final File workingDirectory;
 
     public Compiler(File workingDirectory) {
@@ -42,15 +42,44 @@ public abstract class Compiler {
         StringBuilder outputBuilder = new StringBuilder();
         StringBuilder errorBuilder = new StringBuilder();
         String line;
+
+        System.out.println("Standard output:");
         while ((line = reader.readLine()) != null) {
             outputBuilder.append(line).append("\n");
         }
+
+        System.out.println("Standard error:");
         while ((line = errorReader.readLine()) != null) {
             errorBuilder.append(line).append("\n");
+        }
+        File outputFile = new File("output.txt");
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))) {
+            writer.write("Standard output:\n");
+            writer.write(outputBuilder.toString());
+            writer.write("\nStandard error:\n");
+            writer.write(errorBuilder.toString());
         }
         process.destroy();
         Result result = new Result(outputBuilder.toString(), process.exitValue(), errorBuilder.toString());
         return result;
+    }
+
+    public static boolean Comparator (String studentFile) throws IOException {
+        String sourceCodePath = "TestFiles/expected.txt";
+        String studentOutputPath = "TestFiles/output.txt";
+
+        BufferedReader sourceReader = new BufferedReader(new FileReader(sourceCodePath));
+        BufferedReader outputReader = new BufferedReader(new FileReader(studentOutputPath));
+        String sourceLine;
+        String outputLine;
+
+        while ((sourceLine = sourceReader.readLine()) != null && (outputLine = outputReader.readLine()) != null) {
+            if (!sourceLine.equals(outputLine)) {
+                return false;
+            }
+        }
+
+        return true;
     }
     public File getWorkingDirectory() {
         return workingDirectory;

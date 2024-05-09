@@ -1,6 +1,7 @@
 package com.example.deneme;
 
 
+
 public class Config {
 
     private static Config instance;
@@ -20,5 +21,4 @@ public class Config {
         }
         return instance;
     }
-
 }

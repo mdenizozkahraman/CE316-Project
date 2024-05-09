@@ -14,7 +14,7 @@
     <bottom>
         <HBox alignment="CENTER" prefHeight="57.0" prefWidth="600.0" spacing="10.0" BorderPane.alignment="CENTER">
             <children>
-                <Button mnemonicParsing="false" text="Save Configuration" />
+                <Button mnemonicParsing="false" onAction="#json" text="Save Configuration" />
                 <Button mnemonicParsing="false" text="Delete Configuration">
                     <HBox.margin>
                         <Insets />

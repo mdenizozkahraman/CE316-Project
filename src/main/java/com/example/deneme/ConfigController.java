@@ -3,6 +3,11 @@ package com.example.deneme;
 import com.example.deneme.Compilers.CCompiler;
 import com.example.deneme.Compilers.JavaCompiler;
 import com.example.deneme.Compilers.PythonInterpreter;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.awt.event.ActionListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,8 +20,13 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 
+import javax.swing.*;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ConfigController implements Initializable{
@@ -47,6 +57,10 @@ public class ConfigController implements Initializable{
     private TextField runcommandArgspathfield;
     @FXML
     private TextField expectedOutcomepathfield;
+    @FXML
+    private JButton saveButton;
+    @FXML
+    private JButton deleteButton;
 
     @FXML
     private String[] langugages = {"C","Python","JAVA"};
@@ -149,8 +163,17 @@ public class ConfigController implements Initializable{
     @FXML
     public void runButtonClicked(ActionEvent event) {
         if (mychoiceBox.getSelectionModel().getSelectedItem() == "C"){
+            saveButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    json();
+                }
+            });
+
             String runOutput = compileAndRunC(pathtextField.getText());
             String expectedOutput = compileAndRunC(expectedOutcomepathfield.getText());
+
+
 
             if (runOutput.equals(expectedOutput)) {
                 System.out.println("Correct");
@@ -160,6 +183,13 @@ public class ConfigController implements Initializable{
 
         }
         else if (mychoiceBox.getSelectionModel().getSelectedItem() == "Python"){
+            saveButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    json();
+                }
+            });
+
             String runOutput = runPythonInterpreter(pathtextField.getText());
             String expectedOutput = runPythonInterpreter(expectedOutcomepathfield.getText());
 
@@ -171,6 +201,13 @@ public class ConfigController implements Initializable{
         }
 
         if (mychoiceBox.getSelectionModel().getSelectedItem() == "JAVA"){
+            saveButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    json();
+                }
+            });
+
             String runOutput = compileAndRunJava(pathtextField.getText());
             String expectedOutput = compileAndRunJava(expectedOutcomepathfield.getText());
 
@@ -181,8 +218,8 @@ public class ConfigController implements Initializable{
             }
         }
 
-
     }
+
     @FXML
     public String runPythonInterpreter(String filePath) {
 
@@ -259,13 +296,49 @@ public class ConfigController implements Initializable{
     }
 
 
+    public void json() {
+
+        String jsonFilePath = "JsonFile.json";
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            JsonNode jsonData = objectMapper.createObjectNode();
+
+            JsonNode data = objectMapper.createObjectNode()
+                    .put("Language", mychoiceBox.getSelectionModel().getSelectedItem())
+                    .put("chooseFile", pathtextField.getText())
+                    .put("compilerPath", compilerPathfield.getText())
+                    .put("compiler", compilerInterpreterargsfield.getText())
+                    .put("runCommand",runcommandfield .getText())
+                    .put("expected", expectedOutcomepathfield.getText());
 
 
+            for (int id = 1; id <= 5; id++) {
+                ((ObjectNode) data).put(""  ,"" );
+                ((ObjectNode) data).put("" ,"" );
+            }
 
 
+            List<JsonNode> infos = new ArrayList<>();
+            infos.add(data);
+
+            ((ObjectNode) jsonData).set("Requirements", objectMapper.valueToTree(infos));
 
 
-    @FXML
+            ObjectWriter writer = objectMapper.writerWithDefaultPrettyPrinter();
+            writer.writeValue(new File(jsonFilePath), jsonData);
+
+            System.out.println("Added to JSON: " + data.toString());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+  /*  @FXML
     public void fileChooser(ActionEvent event) {
         Node source = (Node) event.getSource();
         Window window = source.getScene().getWindow();
@@ -282,7 +355,7 @@ public class ConfigController implements Initializable{
         }
 
         event.consume();
-    }
+    }*/
 }
 
 

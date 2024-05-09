@@ -32,7 +32,7 @@ public class ResultController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        compile();
+        //compile();
 
         backButton.setOnAction(actionEvent -> {
             try {
@@ -42,7 +42,7 @@ public class ResultController implements Initializable {
             }
         });
 
-        recompileButton.setOnAction(actionEvent -> {
+       /* recompileButton.setOnAction(actionEvent -> {
             table.getColumns().clear();
             hws.clear();
             File file = new File(Config.getInstance().COMPILERPATH + "/finish.txt");
@@ -53,11 +53,11 @@ public class ResultController implements Initializable {
             } else {
                 compile();
             }
-        });
+        });*/
     }
 
 
-    private void compile() {
+  /*  private void compile() {
         File f = new File(Config.getInstance().COMPILERPATH + "/results.txt");
         if (f.exists()) {
             resultFileImport(f);
@@ -134,7 +134,7 @@ public class ResultController implements Initializable {
     }
 
     private void setupTable() {
-     /*   TableColumn<HWSubmission> idColumn = new TableColumn<>("ID", true, Comparator.comparing(HWSubmission::getId));
+     /  TableColumn<HWSubmission> idColumn = new TableColumn<>("ID", true, Comparator.comparing(HWSubmission::getId));
         TableColumn<HWSubmission> outputColumn = new TableColumn<>("Output", true, Comparator.comparing(HWSubmission::getOutput));
         TableColumn<HWSubmission> expectedValueColumn = new TableColumn<>("Expected Value", true, Comparator.comparing(HWSubmission::getExpectedValue));
         TableColumn<HWSubmission> resultColumn = new TableColumn<>("Result", true, Comparator.comparing(HWSubmission::getResult));
@@ -156,8 +156,8 @@ public class ResultController implements Initializable {
                 new StringFilter<>("Result", Submission::getResult),
                 new IntegerFilter<>("Status", Submission::getStatus),
                 new StringFilter<>("Error", Submission::getError) //details
-        );*/
-    }
+        );
+    }*/
 
 
 }

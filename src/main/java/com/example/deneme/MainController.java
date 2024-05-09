@@ -29,8 +29,7 @@ public class MainController implements Initializable {
 
 
         helpButton.setOnAction(actionEvent -> {
-
-
+            String helpTXT = " Integrated Assignment Environment ";
         });
 
 

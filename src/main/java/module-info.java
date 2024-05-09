@@ -1,7 +1,9 @@
 module com.example.berkdeneme {
     requires javafx.controls;
     requires javafx.fxml;
-    requires java.sql;
+
+    requires com.fasterxml.jackson.databind;
+    requires java.desktop;
 
 
     opens com.example.deneme to javafx.fxml;
