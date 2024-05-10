@@ -1,11 +1,1 @@
-{
-  "Requirements" : [ {
-    "Language" : "JAVA",
-    "chooseFile" : "C:\\Users\\berkg\\IdeaProjects\\CE316-Project\\TestFiles",
-    "compilerPath" : "javac",
-    "compiler" : "",
-    "runCommand" : "java",
-    "expected" : "C:\\Users\\berkg\\IdeaProjects\\CE316-Project\\ExpectedFiles",
-    "" : ""
-  } ]
-}
+{"Requirements":[{"Language":null,"chooseFile":null,"compilerPath":null,"compiler":null,"runCommand":null,"expected":null,"":null}]}

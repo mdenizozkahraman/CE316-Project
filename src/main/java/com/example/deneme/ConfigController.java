@@ -89,7 +89,7 @@ public class ConfigController implements Initializable {
         return filenames;
     }
 
-    private String[] files = getFilenames("TestFiles");
+    private String[] files = getFilenames("JSONFiles");
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
@@ -322,16 +322,15 @@ public class ConfigController implements Initializable {
 
     }
 
-
-
-
     public void json() {
-
-        String jsonFilePath = "JsonFile.json";
-
+        String folderPath = "jsonFiles"; // JSON dosyalarının bulunacağı klasör yolunu belirle
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
+            // Her kayıt için ayrı bir JSON dosyası oluştur
+            String jsonFileName = "JsonFile_" + System.currentTimeMillis() + ".json";
+            String jsonFilePath = folderPath + File.separator + jsonFileName;
+
             JsonNode jsonData = objectMapper.createObjectNode();
 
             JsonNode data = objectMapper.createObjectNode()
@@ -342,19 +341,12 @@ public class ConfigController implements Initializable {
                     .put("runCommand", runcommandfield.getText())
                     .put("expected", expectedOutcomepathfield.getText());
 
-
-            for (int id = 1; id <= 5; id++) {
-                ((ObjectNode) data).put("", "");
-                ((ObjectNode) data).put("", "");
-            }
-
-
             List<JsonNode> infos = new ArrayList<>();
             infos.add(data);
 
             ((ObjectNode) jsonData).set("Requirements", objectMapper.valueToTree(infos));
 
-
+            // JSON dosyasını yaz
             ObjectWriter writer = objectMapper.writerWithDefaultPrettyPrinter();
             writer.writeValue(new File(jsonFilePath), jsonData);
 
@@ -363,8 +355,8 @@ public class ConfigController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
+
 
     public void clearJson(){
         String jsonFilePath = "JsonFile.json";
