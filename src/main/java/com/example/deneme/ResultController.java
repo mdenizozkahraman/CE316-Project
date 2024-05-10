@@ -41,8 +41,8 @@ public class ResultController implements Initializable {
         resultsTable.setItems(resultsList);
     }
 
-    public void addResult(String path, String expectedOutput, String output, String result) {
-        ResultSceneClass resultSceneClass = new ResultSceneClass(output, expectedOutput, result);
+    public void addResult(String path, String output, String expectedOutput, String result) {
+        ResultSceneClass resultSceneClass = new ResultSceneClass(path, output, expectedOutput, result);
         resultsList.add(resultSceneClass);
     }
 }

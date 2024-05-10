@@ -1,15 +1,16 @@
 package com.example.deneme;
 
 public class ResultSceneClass {
-
+    private String path;
     private String expectedOutput;
     private String runOutput;
     private String result;
 
-    public ResultSceneClass(String expectedOutput, String runOutput, String result) {
+    public ResultSceneClass(String path, String runOutput, String expectedOutput, String result) {
         this.expectedOutput = expectedOutput;
         this.runOutput = runOutput;
         this.result = result;
+        this.path = path;
     }
 
     public String getExpectedOutput() {
@@ -24,4 +25,7 @@ public class ResultSceneClass {
         return result;
     }
 
+    public String getPath() {
+        return path;
+    }
 }

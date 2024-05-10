@@ -102,9 +102,6 @@ public class ConfigController implements Initializable {
 
         okeyButton.setOnAction(actionEvent -> {
 
-
-
-
             try {
                 ResultSceneClass result = runButtonClicked();
                 Main.showResultScene(pathtextField.getText(),result.getRunOutput(),result.getExpectedOutput(),result.getResult());
@@ -220,7 +217,7 @@ public class ConfigController implements Initializable {
                 result = "Inorrect";
             }
         }
-        return new ResultSceneClass(runOutput, expectedOutput, result);
+        return new ResultSceneClass(pathtextField.getText(),runOutput, "expectedOutput", result);
     }
 
     @FXML
