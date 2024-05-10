@@ -1,4 +1,4 @@
 Standard output:
-Deniz Özkahraman
+hello zort
 
 Standard error:

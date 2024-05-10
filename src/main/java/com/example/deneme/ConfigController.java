@@ -9,13 +9,17 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 
 import javax.swing.*;
@@ -50,7 +54,7 @@ public class ConfigController implements Initializable {
     @FXML
     private ChoiceBox<String> savesChoiceBox;
     @FXML
-    private Button cancelButton;
+    private Button refreshButton;
     @FXML
     private Button okeyButton;
     @FXML
@@ -123,6 +127,23 @@ public class ConfigController implements Initializable {
             }
 
         }*/
+
+        refreshButton.setOnAction(actionEvent -> {
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("createProject.fxml"));
+            Parent root = null;
+            try {
+                root = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) refreshButton.getScene().getWindow();
+            stage.setScene(scene);
+
+        });
+
+
 
         okeyButton.setOnAction(actionEvent -> {
 
