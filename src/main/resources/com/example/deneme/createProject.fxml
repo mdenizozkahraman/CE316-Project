@@ -14,12 +14,12 @@
     <bottom>
         <HBox alignment="CENTER" prefHeight="57.0" prefWidth="600.0" spacing="10.0" BorderPane.alignment="CENTER">
             <children>
-            <Label alignment="CENTER_RIGHT" prefHeight="7.0" prefWidth="82.0" text="Saves">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <ChoiceBox fx:id="savesChoiceBox" onAction="#choiceBoxChanged" prefWidth="90.0" />
+                <Label alignment="CENTER_RIGHT" prefHeight="7.0" prefWidth="82.0" text="Saves">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <ChoiceBox fx:id="savesChoiceBox" onAction="#loadSelectedJson" prefWidth="90.0" />
                 <Button mnemonicParsing="false" onAction="#json" text="Save Configuration" />
                 <Button mnemonicParsing="false" onAction="#clearJson" text="Delete Configuration">
                     <HBox.margin>

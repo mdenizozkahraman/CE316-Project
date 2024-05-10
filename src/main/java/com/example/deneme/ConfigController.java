@@ -208,8 +208,8 @@ public class ConfigController implements Initializable {
         String runOutput = null;
         String expectedOutput = null;
         String result = null;
-        
-        
+
+
         if (mychoiceBox.getSelectionModel().getSelectedItem() == "C") {
 
             runOutput = compileAndRunC(pathtextField.getText());
@@ -220,7 +220,7 @@ public class ConfigController implements Initializable {
             } else {
                 result = "Incorrect";
             }
-            
+
 
         } else if (mychoiceBox.getSelectionModel().getSelectedItem() == "Python") {
 
@@ -323,12 +323,12 @@ public class ConfigController implements Initializable {
     }
 
     public void json() {
-        String folderPath = "JSONFiles"; // JSON dosyalarının bulunacağı klasör yolunu belirle
+        String folderPath = "JSONFiles";
 
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
-            // Her kayıt için ayrı bir JSON dosyası oluştur
+
             String jsonFileName = "JsonFile_" + System.currentTimeMillis() + ".json";
             String jsonFilePath = folderPath + File.separator + jsonFileName;
 
@@ -357,38 +357,74 @@ public class ConfigController implements Initializable {
             e.printStackTrace();
         }
     }
+    @FXML
+    public void loadSelectedJson(ActionEvent event) {
+
+        String selectedJsonFileName = savesChoiceBox.getSelectionModel().getSelectedItem();
 
 
+        String selectedJsonFilePath = "JSONFiles" + File.separator + selectedJsonFileName;
 
-    public void clearJson(){
-        String jsonFilePath = "JsonFile.json";
-
+        ObjectMapper objectMapper = new ObjectMapper();
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode rootNode = objectMapper.readTree(new File(selectedJsonFilePath));
 
-            JsonNode rootNode = objectMapper.readTree(new File(jsonFilePath));
 
-            JsonNode requirementsNode = rootNode.get("Requirements");
+            String language = rootNode.path("Requirements").path(0).path("Language").asText();
+            String chooseFile = rootNode.path("Requirements").path(0).path("chooseFile").asText();
+            String compilerPath = rootNode.path("Requirements").path(0).path("compilerPath").asText();
+            String interpreterArgs = rootNode.path("Requirements").path(0).path("compiler").asText();
+            String runCommand = rootNode.path("Requirements").path(0).path("runCommand").asText();
+            String expected = rootNode.path("Requirements").path(0).path("expected").asText();
 
-            if (requirementsNode.isArray()) {
-                for (JsonNode requirementNode : requirementsNode) {
-                    // Iterate through each field in the requirement object
-                    requirementNode.fieldNames().forEachRemaining(field -> {
-                        // Set the value of each field to null
-                        ((com.fasterxml.jackson.databind.node.ObjectNode) requirementNode).put(field, (String) null);
-                    });
-                }
-            }
 
-            // Write the modified JsonNode back to the JSON file
-            objectMapper.writeValue(new File(jsonFilePath), rootNode);
-
-            System.out.println("Values have been removed from the JSON file.");
+            mychoiceBox.getSelectionModel().select(language);
+            pathtextField.setText(chooseFile);
+            compilerPathfield.setText(compilerPath);
+            compilerInterpreterargsfield.setText(interpreterArgs);
+            runcommandfield.setText(runCommand);
+            expectedOutcomepathfield.setText(expected);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
+
+    @FXML
+    public void clearJson() {
+        // Seçilen JSON dosyasının adını al
+        String selectedJsonFileName = savesChoiceBox.getSelectionModel().getSelectedItem();
+
+        // Seçilen JSON dosyasının tam yolunu oluştur
+        String selectedJsonFilePath = "JSONFiles" + File.separator + selectedJsonFileName;
+
+        try {
+            // Seçilen JSON dosyasını sil
+            File file = new File(selectedJsonFilePath);
+            if (file.delete()) {
+                System.out.println("Selected JSON file has been deleted successfully.");
+            } else {
+                System.out.println("Failed to delete the selected JSON file.");
+            }
+
+            // UI'daki boşlukları temizle
+            mychoiceBox.getSelectionModel().clearSelection();
+            pathtextField.clear();
+            compilerPathfield.clear();
+            compilerInterpreterargsfield.clear();
+            runcommandfield.clear();
+            expectedOutcomepathfield.clear();
+
+            // Silinen dosyayı ChoiceBox'tan da kaldır
+            savesChoiceBox.getItems().remove(selectedJsonFileName);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
 }
