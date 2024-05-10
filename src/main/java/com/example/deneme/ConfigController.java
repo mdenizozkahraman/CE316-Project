@@ -323,7 +323,8 @@ public class ConfigController implements Initializable {
     }
 
     public void json() {
-        String folderPath = "jsonFiles"; // JSON dosyalarının bulunacağı klasör yolunu belirle
+        String folderPath = "JSONFiles"; // JSON dosyalarının bulunacağı klasör yolunu belirle
+
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
@@ -356,6 +357,7 @@ public class ConfigController implements Initializable {
             e.printStackTrace();
         }
     }
+
 
 
     public void clearJson(){

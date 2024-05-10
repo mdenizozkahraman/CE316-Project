@@ -23,7 +23,6 @@ public class MainController implements Initializable {
             try {
                 com.example.deneme.Main.showCreateProject();
             } catch (IOException e) {
-                throw new RuntimeException(e);
             }
         });
 
