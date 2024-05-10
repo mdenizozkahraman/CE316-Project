@@ -1,4 +1,4 @@
 Standard output:
-Hello, Worldasdsadasdasdasd!
+Deniz Özkahraman
 
 Standard error:

@@ -189,7 +189,7 @@ public class ConfigController implements Initializable {
                 break;
             case "JAVA":
                 compilerPathfield.setText(JavaCompiler.COMPILER_PATH);
-                compilerInterpreterargsfield.setText("");
+                compilerInterpreterargsfield.setText(JavaCompiler.ARGS);
                 runcommandfield.setText(JavaCompiler.RUN_COMMAND);
                 break;
             case "Python":
@@ -257,7 +257,7 @@ public class ConfigController implements Initializable {
         PythonInterpreter pythonInterpreter = new PythonInterpreter(workingDirectory);
 
         try {
-            Result runResult = pythonInterpreter.run(PythonInterpreter.COMPILER_PATH, PythonInterpreter.ARGS);
+            Result runResult = pythonInterpreter.run(compilerPathfield.getText(), compilerInterpreterargsfield.getText());
 
 
             return runResult.getOutput();
@@ -280,11 +280,11 @@ public class ConfigController implements Initializable {
         JavaCompiler javaCompiler = new JavaCompiler(workingDirectory);
 
         try {
-            Result compileResult = javaCompiler.compile(JavaCompiler.COMPILER_PATH, "Test.java");
+            Result compileResult = javaCompiler.compile(compilerPathfield.getText(), compilerInterpreterargsfield.getText());
 
 
             if (compileResult.getStatus() == 0) {
-                Result runResult = javaCompiler.run(JavaCompiler.RUN_COMMAND, "Test");
+                Result runResult = javaCompiler.run(runcommandfield.getText(), "");
 
 
                 return runResult.getOutput();
@@ -305,11 +305,11 @@ public class ConfigController implements Initializable {
         CCompiler cCompiler = new CCompiler(workingDirectory);
 
         try {
-            Result compileResult = cCompiler.compile(CCompiler.COMPILER_PATH, CCompiler.ARGS);
+            Result compileResult = cCompiler.compile(compilerPathfield.getText(), compilerInterpreterargsfield.getText());
 
 
             if (compileResult.getStatus() == 0) {
-                Result runResult = cCompiler.run(workingDirectory + CCompiler.RUN_COMMAND, "");
+                Result runResult = cCompiler.run(workingDirectory + runcommandfield.getText(), "");
 
 
                 return runResult.getOutput();
