@@ -32,6 +32,9 @@ import java.util.ResourceBundle;
 
 public class ConfigController implements Initializable {
 
+    public ConfigController() {
+    }
+
     @FXML
     private Button runCommandArgsChooser;
     @FXML
@@ -42,6 +45,7 @@ public class ConfigController implements Initializable {
     private Label fileChooserLabel;
     @FXML
     private TextField pathtextField;
+
     @FXML
     private ChoiceBox<String> mychoiceBox;
     @FXML
@@ -97,19 +101,16 @@ public class ConfigController implements Initializable {
         }
 
         okeyButton.setOnAction(actionEvent -> {
+
+
+
+
             try {
-                runButtonClicked();
+                ResultSceneClass result = runButtonClicked();
+                Main.showResultScene(pathtextField.getText(),result.getRunOutput(),result.getExpectedOutput(),result.getResult());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-
-            try {
-                com.example.deneme.Main.showResultScene();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-
         });
 
 
@@ -178,66 +179,48 @@ public class ConfigController implements Initializable {
     }
 
     @FXML
-    public void runButtonClicked() throws IOException {
+    public ResultSceneClass runButtonClicked() throws IOException {
+        String runOutput = null;
+        String expectedOutput = null;
+        String result = null;
+        
+        
         if (mychoiceBox.getSelectionModel().getSelectedItem() == "C") {
-         /*   saveButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(java.awt.event.ActionEvent e) {
-                    json();
-                }
-            });
-*/
-            String runOutput = compileAndRunC(pathtextField.getText());
-            String expectedOutput = compileAndRunC(expectedOutcomepathfield.getText());
 
+            runOutput = compileAndRunC(pathtextField.getText());
+            expectedOutput = compileAndRunC(expectedOutcomepathfield.getText());
 
             if (runOutput.equals(expectedOutput)) {
-                System.out.println("Correct");
+                result = "Correct";
             } else {
-                System.out.print("Incorrect");
+                result = "Inorrect";
             }
-
+            
 
         } else if (mychoiceBox.getSelectionModel().getSelectedItem() == "Python") {
-         /*   saveButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(java.awt.event.ActionEvent e) {
-                    json();
-                }
-            });
-*/
-            String runOutput = runPythonInterpreter(pathtextField.getText());
-            String expectedOutput = runPythonInterpreter(expectedOutcomepathfield.getText());
+
+            runOutput = runPythonInterpreter(pathtextField.getText());
+            expectedOutput = runPythonInterpreter(expectedOutcomepathfield.getText());
 
             if (runOutput.equals(expectedOutput)) {
-                System.out.println("Correct");
+                result = "Correct";
             } else {
-                System.out.print("Incorrect");
+                result = "Inorrect";
             }
         }
 
-        if (mychoiceBox.getSelectionModel().getSelectedItem() == "JAVA") {
-         /*   saveButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(java.awt.event.ActionEvent e) {
-                    json();
-                }
-            });
-*/
-            String runOutput = compileAndRunJava(pathtextField.getText());
-            String expectedOutput = compileAndRunJava(expectedOutcomepathfield.getText());
+        else if (mychoiceBox.getSelectionModel().getSelectedItem() == "JAVA") {
+
+            runOutput = compileAndRunJava(pathtextField.getText());
+            expectedOutput = compileAndRunJava(expectedOutcomepathfield.getText());
 
             if (runOutput.equals(expectedOutput)) {
-                System.out.println("Correct");
+                result = "Correct";
             } else {
-                System.out.print("Incorrect");
+                result = "Inorrect";
             }
         }
-
-     //   Main.showResultScene();
-
-
-
+        return new ResultSceneClass(runOutput, expectedOutput, result);
     }
 
     @FXML

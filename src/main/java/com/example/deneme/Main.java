@@ -42,10 +42,14 @@ public class Main extends Application {
 
     }
 
-    public static void showResultScene() throws IOException {
+    public static void showResultScene(String filePath, String output, String expectedOutput, String result) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("resultScene.fxml"));
         AnchorPane resultScene = loader.load();
+
+        ResultController controller = loader.getController();
+        controller.addResult(filePath, expectedOutput, output, result);
+
         Stage resultSceneStage = new Stage();
         resultSceneStage.setTitle("ResultScene!");
         resultSceneStage.initModality(Modality.WINDOW_MODAL);
@@ -53,6 +57,7 @@ public class Main extends Application {
         resultSceneStage.setScene(scene);
         resultSceneStage.showAndWait();
     }
+
 
 
 

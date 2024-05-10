@@ -8,9 +8,9 @@
    <children>
       <TableView fx:id="resultsTable" layoutX="185.0" layoutY="74.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columns>
-          <TableColumn fx:id="ID" prefWidth="76.0" text="ID" />
-          <TableColumn fx:id="expectedOutput" prefWidth="194.0" text="EXPECTED OUTPUT" />
-            <TableColumn fx:id="output" minWidth="0.0" prefWidth="200.0" text="OUTPUT" />
+          <TableColumn fx:id="path" prefWidth="76.0" text="ID" />
+          <TableColumn fx:id="expectedOutput" prefWidth="194.0" text="OUTPUT" />
+            <TableColumn fx:id="output" minWidth="0.0" prefWidth="200.0" text="EXPECTED OUTPUT" />
             <TableColumn fx:id="result" prefWidth="129.0" text="RESULT" />
         </columns>
       </TableView>

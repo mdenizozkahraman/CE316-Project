@@ -15,43 +15,35 @@ import java.util.ResourceBundle;
 
 public class ResultController implements Initializable {
     @FXML
-  /*  private Label welcomeText;
+    private TableView<ResultSceneClass> resultsTable;
 
     @FXML
-    private TableView<Results> resultsTable;
-    @FXML
-    private TableColumn<Results,Integer> ID;
+    private TableColumn<ResultSceneClass, String> path;
 
     @FXML
-    private TableColumn<Results, String> expectedOutput;
+    private TableColumn<ResultSceneClass, String> expectedOutput;
 
     @FXML
-    private TableColumn<Results,String> output;
+    private TableColumn<ResultSceneClass, String> output;
 
     @FXML
-    private TableColumn<Results,Boolean> result;
+    private TableColumn<ResultSceneClass, String> result;
 
-    ObservableList<Results> resultsList = FXCollections.observableArrayList(
-            new Results(1,"hello","hello",true),
-            new Results(2,"no","hello",false),
-            new Results(3,"yes","no",false)
+    ObservableList<ResultSceneClass> resultsList = FXCollections.observableArrayList();
 
-    );*/
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-      /*  ID.setCellValueFactory(new PropertyValueFactory<Results,Integer>("ID"));
-        expectedOutput.setCellValueFactory(new PropertyValueFactory<Results,String>("expectedOutput"));
-        output.setCellValueFactory(new PropertyValueFactory<Results,String>("output"));
-        result.setCellValueFactory(new PropertyValueFactory<Results,Boolean>("result"));
+        path.setCellValueFactory(new PropertyValueFactory<>("path"));
+        expectedOutput.setCellValueFactory(new PropertyValueFactory<>("expectedOutput"));
+        output.setCellValueFactory(new PropertyValueFactory<>("output"));
+        result.setCellValueFactory(new PropertyValueFactory<>("result"));
 
         resultsTable.setItems(resultsList);
+    }
 
-*/
-
-
-
-
-
+    public void addResult(String path, String expectedOutput, String output, String result) {
+        ResultSceneClass resultSceneClass = new ResultSceneClass(output, expectedOutput, result);
+        resultsList.add(resultSceneClass);
     }
 }
+
