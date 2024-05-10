@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import java.awt.event.ActionListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,15 +16,14 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import javafx.stage.Window;
 
 import javax.swing.*;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -75,7 +73,7 @@ public class ConfigController implements Initializable {
         mychoiceBox.getItems().addAll(langugages);
         mychoiceBox.getSelectionModel().selectFirst();
 
-        if (Config.getInstance().COMPILERPATH != null) {
+      /*  if (Config.getInstance().COMPILERPATH != null) {
             compilerPathfield.setText(Config.getInstance().COMPILERPATH);
             compilerInterpreterargsfield.setText(Config.getInstance().COMPILERINTERPRETERARGS);
             runcommandfield.setText(Config.getInstance().RUNCOMMAND);
@@ -98,13 +96,16 @@ public class ConfigController implements Initializable {
                     break;
             }
 
-        }
+        }*/
 
         okeyButton.setOnAction(actionEvent -> {
 
+            Path path = Paths.get(pathtextField.getText());
+
+
             try {
                 ResultSceneClass result = runButtonClicked();
-                Main.showResultScene(pathtextField.getText(),result.getRunOutput(),result.getExpectedOutput(),result.getResult());
+                Main.showResultScene(path.getFileName().toString(),result.getRunOutput(),result.getExpectedOutput(),result.getResult());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -128,6 +129,7 @@ public class ConfigController implements Initializable {
         } else {
             System.out.println("No directory selected");
         }
+
     }
 
     @FXML
@@ -293,6 +295,8 @@ public class ConfigController implements Initializable {
         return "-3";
 
     }
+
+
 
 
     public void json() {
