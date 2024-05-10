@@ -9,21 +9,16 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.Stage;
 import javafx.stage.Window;
 
 import javax.swing.*;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -55,7 +50,7 @@ public class ConfigController implements Initializable {
     @FXML
     private ChoiceBox<String> savesChoiceBox;
     @FXML
-    private Button refreshButton;
+    private Button cancelButton;
     @FXML
     private Button okeyButton;
     @FXML
@@ -104,10 +99,6 @@ public class ConfigController implements Initializable {
         savesChoiceBox.getItems().addAll(files);
         savesChoiceBox.getSelectionModel().selectFirst();
 
-
-
-
-
       /*  if (Config.getInstance().COMPILERPATH != null) {
             compilerPathfield.setText(Config.getInstance().COMPILERPATH);
             compilerInterpreterargsfield.setText(Config.getInstance().COMPILERINTERPRETERARGS);
@@ -133,24 +124,6 @@ public class ConfigController implements Initializable {
 
         }*/
 
-        refreshButton.setOnAction(actionEvent -> {
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("createProject.fxml"));
-            Parent root = null;
-            try {
-                root = loader.load();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) refreshButton.getScene().getWindow();
-            stage.setScene(scene);
-        });
-
-
-
-
-
         okeyButton.setOnAction(actionEvent -> {
 
             Path path = Paths.get(pathtextField.getText());
@@ -163,8 +136,6 @@ public class ConfigController implements Initializable {
                 throw new RuntimeException(e);
             }
         });
-
-
 
 
     }
@@ -218,7 +189,7 @@ public class ConfigController implements Initializable {
                 break;
             case "JAVA":
                 compilerPathfield.setText(JavaCompiler.COMPILER_PATH);
-                compilerInterpreterargsfield.setText(JavaCompiler.ARGS);
+                compilerInterpreterargsfield.setText("");
                 runcommandfield.setText(JavaCompiler.RUN_COMMAND);
                 break;
             case "Python":
@@ -286,7 +257,7 @@ public class ConfigController implements Initializable {
         PythonInterpreter pythonInterpreter = new PythonInterpreter(workingDirectory);
 
         try {
-            Result runResult = pythonInterpreter.run(compilerPathfield.getText(), compilerInterpreterargsfield.getText());
+            Result runResult = pythonInterpreter.run(PythonInterpreter.COMPILER_PATH, PythonInterpreter.ARGS);
 
 
             return runResult.getOutput();
@@ -309,11 +280,11 @@ public class ConfigController implements Initializable {
         JavaCompiler javaCompiler = new JavaCompiler(workingDirectory);
 
         try {
-            Result compileResult = javaCompiler.compile(compilerPathfield.getText(), compilerInterpreterargsfield.getText());
+            Result compileResult = javaCompiler.compile(JavaCompiler.COMPILER_PATH, "Test.java");
 
 
             if (compileResult.getStatus() == 0) {
-                Result runResult = javaCompiler.run(runcommandfield.getText(), "");
+                Result runResult = javaCompiler.run(JavaCompiler.RUN_COMMAND, "Test");
 
 
                 return runResult.getOutput();
@@ -334,11 +305,11 @@ public class ConfigController implements Initializable {
         CCompiler cCompiler = new CCompiler(workingDirectory);
 
         try {
-            Result compileResult = cCompiler.compile(compilerPathfield.getText(), compilerInterpreterargsfield.getText());
+            Result compileResult = cCompiler.compile(CCompiler.COMPILER_PATH, CCompiler.ARGS);
 
 
             if (compileResult.getStatus() == 0) {
-                Result runResult = cCompiler.run(workingDirectory + runcommandfield.getText(), "");
+                Result runResult = cCompiler.run(workingDirectory + CCompiler.RUN_COMMAND, "");
 
 
                 return runResult.getOutput();
