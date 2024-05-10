@@ -46,6 +46,9 @@ public class ConfigController implements Initializable {
 
     @FXML
     private ChoiceBox<String> mychoiceBox;
+
+    @FXML
+    private ChoiceBox<String> savesChoiceBox;
     @FXML
     private Button cancelButton;
     @FXML
@@ -68,10 +71,33 @@ public class ConfigController implements Initializable {
     @FXML
     private String[] langugages = {"C", "Python", "JAVA"};
 
+    public static String[] getFilenames(String directoryPath) {
+        File directory = new File(directoryPath);
+
+        if (!directory.exists() || !directory.isDirectory()) {
+            return null;
+        }
+
+        File[] files = directory.listFiles();
+
+        String[] filenames = new String[files.length];
+
+        for (int i = 0; i < files.length; i++) {
+            filenames[i] = files[i].getName();
+        }
+
+        return filenames;
+    }
+
+    private String[] files = getFilenames("TestFiles");
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         mychoiceBox.getItems().addAll(langugages);
         mychoiceBox.getSelectionModel().selectFirst();
+
+        savesChoiceBox.getItems().addAll(files);
+        savesChoiceBox.getSelectionModel().selectFirst();
 
       /*  if (Config.getInstance().COMPILERPATH != null) {
             compilerPathfield.setText(Config.getInstance().COMPILERPATH);
