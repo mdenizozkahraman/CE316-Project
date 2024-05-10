@@ -27,7 +27,7 @@
                     </HBox.margin>
                 </Button>
                 <Button fx:id="okeyButton" mnemonicParsing="false" onAction="#runButtonClicked" text="Run" />
-                <Button mnemonicParsing="false" text="Cancel">
+                <Button fx:id="refreshButton" mnemonicParsing="false" text="Refresh">
                     <HBox.margin>
                         <Insets />
                     </HBox.margin>
