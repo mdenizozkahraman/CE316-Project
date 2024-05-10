@@ -1,10 +1,11 @@
 {
   "Requirements" : [ {
-    "Language" : "",
+    "Language" : "Python",
     "chooseFile" : "",
-    "compilerPath" : "",
-    "compiler" : "",
+    "compilerPath" : "python",
+    "compiler" : "Main.py",
     "runCommand" : "",
-    "expected" : ""
+    "expected" : "",
+    "" : ""
   } ]
 }

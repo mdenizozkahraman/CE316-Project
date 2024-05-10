@@ -18,6 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 
 import javax.swing.*;
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class ConfigController implements Initializable{
+public class ConfigController implements Initializable {
 
     @FXML
     private Button runCommandArgsChooser;
@@ -63,14 +64,14 @@ public class ConfigController implements Initializable{
     private JButton deleteButton;
 
     @FXML
-    private String[] langugages = {"C","Python","JAVA"};
+    private String[] langugages = {"C", "Python", "JAVA"};
 
     @Override
-    public void initialize(URL arg0, ResourceBundle arg1){
+    public void initialize(URL arg0, ResourceBundle arg1) {
         mychoiceBox.getItems().addAll(langugages);
         mychoiceBox.getSelectionModel().selectFirst();
 
-        if(Config.getInstance().COMPILERPATH != null){
+        if (Config.getInstance().COMPILERPATH != null) {
             compilerPathfield.setText(Config.getInstance().COMPILERPATH);
             compilerInterpreterargsfield.setText(Config.getInstance().COMPILERINTERPRETERARGS);
             runcommandfield.setText(Config.getInstance().RUNCOMMAND);
@@ -94,6 +95,23 @@ public class ConfigController implements Initializable{
             }
 
         }
+
+        okeyButton.setOnAction(actionEvent -> {
+            try {
+                runButtonClicked();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            try {
+                com.example.deneme.Main.showResultScene();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+
+        });
+
 
     }
 
@@ -132,7 +150,6 @@ public class ConfigController implements Initializable{
     }
 
 
-
     public void choiceBoxChanged(ActionEvent event) {
 
 
@@ -161,18 +178,17 @@ public class ConfigController implements Initializable{
     }
 
     @FXML
-    public void runButtonClicked(ActionEvent event) {
-        if (mychoiceBox.getSelectionModel().getSelectedItem() == "C"){
-            saveButton.addActionListener(new ActionListener() {
+    public void runButtonClicked() throws IOException {
+        if (mychoiceBox.getSelectionModel().getSelectedItem() == "C") {
+         /*   saveButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     json();
                 }
             });
-
+*/
             String runOutput = compileAndRunC(pathtextField.getText());
             String expectedOutput = compileAndRunC(expectedOutcomepathfield.getText());
-
 
 
             if (runOutput.equals(expectedOutput)) {
@@ -181,15 +197,15 @@ public class ConfigController implements Initializable{
                 System.out.print("Incorrect");
             }
 
-        }
-        else if (mychoiceBox.getSelectionModel().getSelectedItem() == "Python"){
-            saveButton.addActionListener(new ActionListener() {
+
+        } else if (mychoiceBox.getSelectionModel().getSelectedItem() == "Python") {
+         /*   saveButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     json();
                 }
             });
-
+*/
             String runOutput = runPythonInterpreter(pathtextField.getText());
             String expectedOutput = runPythonInterpreter(expectedOutcomepathfield.getText());
 
@@ -200,14 +216,14 @@ public class ConfigController implements Initializable{
             }
         }
 
-        if (mychoiceBox.getSelectionModel().getSelectedItem() == "JAVA"){
-            saveButton.addActionListener(new ActionListener() {
+        if (mychoiceBox.getSelectionModel().getSelectedItem() == "JAVA") {
+         /*   saveButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     json();
                 }
             });
-
+*/
             String runOutput = compileAndRunJava(pathtextField.getText());
             String expectedOutput = compileAndRunJava(expectedOutcomepathfield.getText());
 
@@ -217,6 +233,10 @@ public class ConfigController implements Initializable{
                 System.out.print("Incorrect");
             }
         }
+
+     //   Main.showResultScene();
+
+
 
     }
 
@@ -232,18 +252,19 @@ public class ConfigController implements Initializable{
             Result runResult = pythonInterpreter.run(PythonInterpreter.COMPILER_PATH, PythonInterpreter.ARGS);
 
 
-
             return runResult.getOutput();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
+
         return "-1";
     }
 
     @FXML
     public String compileAndRunJava(String filePath) {
-
 
 
         File workingDirectory = new File(filePath);
@@ -252,7 +273,6 @@ public class ConfigController implements Initializable{
 
         try {
             Result compileResult = javaCompiler.compile(JavaCompiler.COMPILER_PATH, "Test.java");
-
 
 
             if (compileResult.getStatus() == 0) {
@@ -278,7 +298,6 @@ public class ConfigController implements Initializable{
 
         try {
             Result compileResult = cCompiler.compile(CCompiler.COMPILER_PATH, CCompiler.ARGS);
-
 
 
             if (compileResult.getStatus() == 0) {
@@ -310,13 +329,13 @@ public class ConfigController implements Initializable{
                     .put("chooseFile", pathtextField.getText())
                     .put("compilerPath", compilerPathfield.getText())
                     .put("compiler", compilerInterpreterargsfield.getText())
-                    .put("runCommand",runcommandfield .getText())
+                    .put("runCommand", runcommandfield.getText())
                     .put("expected", expectedOutcomepathfield.getText());
 
 
             for (int id = 1; id <= 5; id++) {
-                ((ObjectNode) data).put(""  ,"" );
-                ((ObjectNode) data).put("" ,"" );
+                ((ObjectNode) data).put("", "");
+                ((ObjectNode) data).put("", "");
             }
 
 
@@ -338,26 +357,7 @@ public class ConfigController implements Initializable{
     }
 
 
-  /*  @FXML
-    public void fileChooser(ActionEvent event) {
-        Node source = (Node) event.getSource();
-        Window window = source.getScene().getWindow();
-
-        FileChooser fileChooser = new FileChooser();
-        File file = fileChooser.showOpenDialog(window);
-
-        if (file != null) {
-            String filePath = file.getAbsolutePath();
-            pathtextField.setText(filePath); // Update TextField directly
-            System.out.println("Selected file path: " + filePath); // Optional for debugging
-        } else {
-            System.out.println("No file selected");
-        }
-
-        event.consume();
-    }*/
 }
-
 
 
 
