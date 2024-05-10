@@ -190,7 +190,7 @@ public class ConfigController implements Initializable {
             if (runOutput.equals(expectedOutput)) {
                 result = "Correct";
             } else {
-                result = "Inorrect";
+                result = "Incorrect";
             }
             
 
@@ -202,7 +202,7 @@ public class ConfigController implements Initializable {
             if (runOutput.equals(expectedOutput)) {
                 result = "Correct";
             } else {
-                result = "Inorrect";
+                result = "Incorrect";
             }
         }
 
@@ -214,10 +214,10 @@ public class ConfigController implements Initializable {
             if (runOutput.equals(expectedOutput)) {
                 result = "Correct";
             } else {
-                result = "Inorrect";
+                result = "Incorrect";
             }
         }
-        return new ResultSceneClass(pathtextField.getText(),runOutput, "expectedOutput", result);
+        return new ResultSceneClass(pathtextField.getText(),runOutput, expectedOutput, result);
     }
 
     @FXML
@@ -334,6 +334,36 @@ public class ConfigController implements Initializable {
             e.printStackTrace();
         }
 
+    }
+
+    public void clearJson(){
+        String jsonFilePath = "JsonFile.json";
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            JsonNode rootNode = objectMapper.readTree(new File(jsonFilePath));
+
+            JsonNode requirementsNode = rootNode.get("Requirements");
+
+            if (requirementsNode.isArray()) {
+                for (JsonNode requirementNode : requirementsNode) {
+                    // Iterate through each field in the requirement object
+                    requirementNode.fieldNames().forEachRemaining(field -> {
+                        // Set the value of each field to null
+                        ((com.fasterxml.jackson.databind.node.ObjectNode) requirementNode).put(field, (String) null);
+                    });
+                }
+            }
+
+            // Write the modified JsonNode back to the JSON file
+            objectMapper.writeValue(new File(jsonFilePath), rootNode);
+
+            System.out.println("Values have been removed from the JSON file.");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

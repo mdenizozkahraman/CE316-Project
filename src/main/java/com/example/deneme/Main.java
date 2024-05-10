@@ -48,7 +48,7 @@ public class Main extends Application {
         AnchorPane resultScene = loader.load();
 
         ResultController controller = loader.getController();
-        controller.addResult(filePath, expectedOutput, output, result);
+        controller.addResult(filePath, output,expectedOutput , result);
 
         Stage resultSceneStage = new Stage();
         resultSceneStage.setTitle("ResultScene!");

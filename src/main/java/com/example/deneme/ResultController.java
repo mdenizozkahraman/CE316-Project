@@ -34,8 +34,8 @@ public class ResultController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         path.setCellValueFactory(new PropertyValueFactory<>("path"));
+        output.setCellValueFactory(new PropertyValueFactory<>("runOutput"));
         expectedOutput.setCellValueFactory(new PropertyValueFactory<>("expectedOutput"));
-        output.setCellValueFactory(new PropertyValueFactory<>("output"));
         result.setCellValueFactory(new PropertyValueFactory<>("result"));
 
         resultsTable.setItems(resultsList);

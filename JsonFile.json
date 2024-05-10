@@ -1,11 +1,11 @@
 {
   "Requirements" : [ {
-    "Language" : "C",
-    "chooseFile" : "C:\\CE316-Project\\TestFiles",
-    "compilerPath" : "gcc",
-    "compiler" : "main.c -o main.exe",
-    "runCommand" : "/main.exe",
-    "expected" : "C:\\Users\\Deniz\\Desktop\\testtest",
+    "Language" : "JAVA",
+    "chooseFile" : "C:\\Users\\berkg\\IdeaProjects\\CE316-Project\\TestFiles",
+    "compilerPath" : "javac",
+    "compiler" : "",
+    "runCommand" : "java",
+    "expected" : "C:\\Users\\berkg\\IdeaProjects\\CE316-Project\\ExpectedFiles",
     "" : ""
   } ]
 }
