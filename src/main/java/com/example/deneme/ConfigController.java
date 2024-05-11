@@ -103,30 +103,7 @@ public class ConfigController implements Initializable {
         savesChoiceBox.getItems().addAll(files);
         savesChoiceBox.getSelectionModel().selectFirst();
 
-      /*  if (Config.getInstance().COMPILERPATH != null) {
-            compilerPathfield.setText(Config.getInstance().COMPILERPATH);
-            compilerInterpreterargsfield.setText(Config.getInstance().COMPILERINTERPRETERARGS);
-            runcommandfield.setText(Config.getInstance().RUNCOMMAND);
-            runcommandArgspathfield.setText(Config.getInstance().RUNCOMMANDARGS);
-            expectedOutcomepathfield.setText(Config.getInstance().EXPECTEDOUTCOME);
 
-            Language selectedLanguage = Config.getInstance().SELECTEDLANGUAGE;
-            switch (selectedLanguage.toString()) {
-                case "C":
-                    mychoiceBox.getSelectionModel().select(1);
-                    break;
-                case "JAVA":
-                    mychoiceBox.getSelectionModel().select(2);
-                    break;
-                case "PYTHON":
-                    mychoiceBox.getSelectionModel().select(3);
-                    break;
-                default:
-                    // Handle default case if needed
-                    break;
-            }
-
-        }*/
 
         refreshButton.setOnAction(actionEvent -> {
 
