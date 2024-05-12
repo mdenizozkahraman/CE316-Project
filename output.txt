@@ -1,4 +1,4 @@
 Standard output:
-hello python expected!!
+Hello, World! C 
 
 Standard error:
