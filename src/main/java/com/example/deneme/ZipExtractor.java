@@ -5,49 +5,49 @@ import java.util.zip.*;
 
 public class ZipExtractor {
 
-    public static void unzip(String zipFilePath, String destDir) throws IOException {
-        File dir = new File(destDir);
-        if (!dir.exists()) dir.mkdirs();
+    private boolean zipExists = false;
 
+    public void extract(String directoryPath) {
+
+        File directory = new File(directoryPath);
+        File[] zipFiles = directory.listFiles((dir, name) -> name.toLowerCase().endsWith(".zip"));
         byte[] buffer = new byte[1024];
-        ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFilePath));
-        ZipEntry ze = zis.getNextEntry();
-        while (ze != null) {
-            String fileName = ze.getName();
-            File newFile = new File(destDir + File.separator + fileName);
-            new File(newFile.getParent()).mkdirs();
-            FileOutputStream fos = new FileOutputStream(newFile);
-            int len;
-            while ((len = zis.read(buffer)) > 0) {
-                fos.write(buffer, 0, len);
+        if (zipFiles != null) {
+            for (File zipFile : zipFiles) {
+                try {
+                    ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(zipFile));
+                    ZipEntry zipEntry = zipInputStream.getNextEntry();
+                    while (zipEntry != null) {
+                        File outputFile = new File(directory, zipEntry.getName());
+                        if (zipEntry.isDirectory()) {
+                            if (!outputFile.exists()) {
+                                outputFile.mkdirs();
+                            }
+                        } else {
+                            File parentDir = outputFile.getParentFile();
+                            if (!parentDir.exists()) {
+                                parentDir.mkdirs();
+                            }
+                            FileOutputStream fileOutputStream = new FileOutputStream(outputFile);
+                            int length;
+                            while ((length = zipInputStream.read(buffer)) > 0) {
+                                fileOutputStream.write(buffer, 0, length);
+                            }
+                            fileOutputStream.close();
+                        }
+                        zipEntry = zipInputStream.getNextEntry();
+                    }
+                    zipInputStream.closeEntry();
+                    zipInputStream.close();
+                    this.zipExists = true;
+
+                } catch (IOException e) {
+                    e.getMessage();
+                }
             }
-            fos.close();
-            zis.closeEntry();
-            ze = zis.getNextEntry();
-        }
-        zis.closeEntry();
-        zis.close();
-    }
-
-    public static void extractAllZipsInDirectory(String zipDirPath, String outputDirPath) {
-        File zipDir = new File(zipDirPath);
-        File[] zipFiles = zipDir.listFiles((dir, name) -> name.toLowerCase().endsWith(".zip"));
-
-        if (zipFiles == null) {
-            System.out.println("No ZIP files found in the directory.");
-            return;
+        } else {
+            this.zipExists = false;
         }
 
-        for (File zipFile : zipFiles) {
-            String studentId = zipFile.getName().replace(".zip", "");
-            String studentOutputDir = outputDirPath + File.separator + studentId;
-            try {
-                unzip(zipFile.getAbsolutePath(), studentOutputDir);
-                System.out.println("Extracted: " + zipFile.getName());
-            } catch (IOException e) {
-                System.out.println("Failed to extract: " + zipFile.getName());
-                e.printStackTrace();
-            }
-        }
     }
 }

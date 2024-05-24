@@ -1,9 +1,6 @@
 package com.example.deneme;
 
-import com.example.deneme.Compilers.CCompiler;
-import com.example.deneme.Compilers.JavaCompiler;
-import com.example.deneme.Compilers.PythonInterpreter;
-import com.example.deneme.Compilers.CppCompiler;
+import com.example.deneme.Compilers.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -36,19 +33,9 @@ public class ConfigController implements Initializable {
     }
 
     @FXML
-    private Button runCommandArgsChooser;
-    @FXML
-    private Button expectedoutcomeChooser;
-    @FXML
-    private Button fileChooser;
-    @FXML
-    private Label fileChooserLabel;
-    @FXML
     private TextField pathtextField;
-
     @FXML
     private ChoiceBox<String> mychoiceBox;
-
     @FXML
     private ChoiceBox<String> savesChoiceBox;
     @FXML
@@ -64,13 +51,7 @@ public class ConfigController implements Initializable {
     @FXML
     private TextField runcommandfield;
     @FXML
-    private TextField runcommandArgspathfield;
-    @FXML
     private TextField expectedOutcomepathfield;
-    @FXML
-    private JButton saveButton;
-    @FXML
-    private JButton deleteButton;
 
     @FXML
     private String[] langugages = {"C", "C++" ,"Python", "JAVA"};
@@ -271,7 +252,7 @@ public class ConfigController implements Initializable {
 
         else if (mychoiceBox.getSelectionModel().getSelectedItem() == "JAVA") {
 
-            runOutput = compileAndRunJava(pathtextField.getText());
+            runOutput = compileAndRunJava(pathtextField.getText() + "\\20200602098");
             expectedOutput = compileAndRunJava(expectedOutcomepathfield.getText());
 
             if (runOutput.equals(expectedOutput)) {
@@ -285,7 +266,8 @@ public class ConfigController implements Initializable {
 
     @FXML
     public String runPythonInterpreter(String filePath) {
-
+        /*ZipExtractor zipExtractor = new ZipExtractor();
+        zipExtractor.extract(pathtextField.getText());*/
 
         File workingDirectory = new File(filePath);
 
@@ -308,10 +290,10 @@ public class ConfigController implements Initializable {
 
     @FXML
     public String compileAndRunJava(String filePath) {
-
+        ZipExtractor zipExtractor = new ZipExtractor();
+        zipExtractor.extract(pathtextField.getText());
 
         File workingDirectory = new File(filePath);
-
         JavaCompiler javaCompiler = new JavaCompiler(workingDirectory);
 
         try {
@@ -333,6 +315,8 @@ public class ConfigController implements Initializable {
 
     @FXML
     public String compileAndRunC(String filePath) {
+        /*ZipExtractor zipExtractor = new ZipExtractor();
+        zipExtractor.extract(pathtextField.getText());*/
 
 
         File workingDirectory = new File(filePath);
@@ -359,7 +343,8 @@ public class ConfigController implements Initializable {
 
     @FXML
     public String compileAndRunCpp(String filePath) {
-
+        /*ZipExtractor zipExtractor = new ZipExtractor();
+        zipExtractor.extract(pathtextField.getText());*/
 
         File workingDirectory = new File(filePath);
 
