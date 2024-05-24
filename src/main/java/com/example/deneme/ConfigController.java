@@ -15,10 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -56,6 +53,8 @@ public class ConfigController implements Initializable {
     private ChoiceBox<String> savesChoiceBox;
     @FXML
     private Button refreshButton;
+    @FXML
+    private Button helpBtn;
     @FXML
     private Button okeyButton;
     @FXML
@@ -104,6 +103,16 @@ public class ConfigController implements Initializable {
         savesChoiceBox.getItems().addAll(files);
         savesChoiceBox.getSelectionModel().selectFirst();
 
+        helpBtn.setOnAction(actionEvent -> {
+            String helpTXT = " In this window to save the current configuration, use the \"Save Configuration\" button located below. If you wish to delete the configuration, you can use the \"Delete Configuration\" button. " +
+                    "After clicking either the \"Save Configuration\" or \"Delete Configuration\" button, you must click the \"Refresh\" button to update the window.\n" +
+                    "\n" +
+                    "When you press the \"Run\" button, a new window will open displaying information about the relevant folder, the file output, the expected output, and the result.";
+
+            ConfigController.showHelp(helpTXT, "Help");
+
+        });
+
 
 
         refreshButton.setOnAction(actionEvent -> {
@@ -137,6 +146,14 @@ public class ConfigController implements Initializable {
         });
 
 
+
+    }
+    public static void showHelp(String content, String header) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("HELP");
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
     @FXML
@@ -472,7 +489,6 @@ public class ConfigController implements Initializable {
 
 
 }
-
 
 
 

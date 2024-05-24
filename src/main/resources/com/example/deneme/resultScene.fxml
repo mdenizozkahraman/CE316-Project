@@ -12,6 +12,7 @@
           <TableColumn fx:id="output" prefWidth="194.0" text="OUTPUT" />
             <TableColumn fx:id="expectedOutput" minWidth="0.0" prefWidth="200.0" text="EXPECTED OUTPUT" />
             <TableColumn fx:id="result" prefWidth="129.0" text="RESULT" />
+
         </columns>
       </TableView>
    </children>

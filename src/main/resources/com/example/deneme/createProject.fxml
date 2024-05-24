@@ -43,15 +43,15 @@
                         <Font size="18.0" />
                     </font>
                     <HBox.margin>
-                        <Insets left="20.0" top="30.0" />
+                        <Insets left="20.0" top="40.0" />
                     </HBox.margin>
                 </Label>
                 <ChoiceBox fx:id="mychoiceBox" onAction="#choiceBoxChanged" prefWidth="90.0">
                     <HBox.margin>
-                        <Insets left="10.0" top="30.0" />
+                        <Insets left="10.0" top="40.0" />
                     </HBox.margin>
                 </ChoiceBox>
-                <Label text="Integrated Assignment Environment">
+                <Label prefHeight="19.0" prefWidth="235.0" text="Integrated Assignment Environment">
                     <HBox.margin>
                         <Insets left="100.0" top="10.0" />
                     </HBox.margin>
@@ -87,6 +87,7 @@
                 <Label layoutX="312.0" layoutY="128.0" text="Expected Outcome" />
                 <TextField fx:id="expectedOutcomepathfield" layoutX="435.0" layoutY="124.0" prefHeight="26.0" prefWidth="110.0" />
                 <Button fx:id="expectedoutcomeChooser" layoutX="555.0" layoutY="124.0" mnemonicParsing="false" onAction="#expectedDirectoryChooser" prefHeight="26.0" prefWidth="29.0" text="Button" />
+                <Button fx:id="helpBtn" layoutX="463.0" layoutY="29.0" mnemonicParsing="false" text="Help" />
             </children>
         </AnchorPane>
     </center>

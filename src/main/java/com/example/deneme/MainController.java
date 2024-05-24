@@ -30,9 +30,7 @@ public class MainController implements Initializable {
 
 
         helpButton.setOnAction(actionEvent -> {
-            String helpTXT = "To use the Integrated Assignment Environment (IAE) software, follow these steps: \n\n When you click on the \"Create Project\" button, a new window will open with various configuration settings. To save the current configuration, use the \"Save\" button located below. If you wish to delete the configuration, you can use the \"Delete\" button. After clicking either the \"Save\" or \"Delete\" button, you must click the \"Refresh\" button to update the window.\n" +
-                    "\n" +
-                    "When you press the \"Run\" button, a new window will open displaying information about the relevant folder, the file output, the expected output, and the result.";
+            String helpTXT = "To use the Integrated Assignment Environment (IAE) software, follow these steps: \n\n When you click on the \"Create Project\" button, a new window will open with various configuration settings.";
 
             MainController.createHelp(helpTXT, "Help");
 
