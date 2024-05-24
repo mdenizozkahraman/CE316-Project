@@ -1,0 +1,10 @@
+{
+  "Requirements" : [ {
+    "Language" : "JAVA",
+    "chooseFile" : "C:\\Users\\zcere\\OneDrive\\Belgeler\\New Folder",
+    "compilerPath" : "javac",
+    "compiler" : "Test.java",
+    "runCommand" : "java Test",
+    "expected" : "ExpectedFiles"
+  } ]
+}

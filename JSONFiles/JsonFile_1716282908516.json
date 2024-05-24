@@ -1,0 +1,10 @@
+{
+  "Requirements" : [ {
+    "Language" : "C",
+    "chooseFile" : "",
+    "compilerPath" : "",
+    "compiler" : "",
+    "runCommand" : "",
+    "expected" : ""
+  } ]
+}

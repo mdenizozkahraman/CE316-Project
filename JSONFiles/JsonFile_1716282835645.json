@@ -1,0 +1,10 @@
+{
+  "Requirements" : [ {
+    "Language" : "Python",
+    "chooseFile" : "C:\\Users\\zcere\\OneDrive\\Belgeler\\New Folder",
+    "compilerPath" : "python",
+    "compiler" : "PythonTest.py",
+    "runCommand" : "",
+    "expected" : "ExpectedFiles"
+  } ]
+}
