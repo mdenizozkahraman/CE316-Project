@@ -3,6 +3,7 @@ package com.example.deneme;
 import com.example.deneme.Compilers.CCompiler;
 import com.example.deneme.Compilers.JavaCompiler;
 import com.example.deneme.Compilers.PythonInterpreter;
+import com.example.deneme.Compilers.CppCompiler;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -73,7 +74,7 @@ public class ConfigController implements Initializable {
     private JButton deleteButton;
 
     @FXML
-    private String[] langugages = {"C", "Python", "JAVA"};
+    private String[] langugages = {"C", "C++" ,"Python", "JAVA"};
 
     public static String[] getFilenames(String directoryPath) {
         File directory = new File(directoryPath);
@@ -185,6 +186,11 @@ public class ConfigController implements Initializable {
                 compilerInterpreterargsfield.setText(CCompiler.ARGS);
                 runcommandfield.setText(CCompiler.RUN_COMMAND);
                 break;
+            case "C++":
+                compilerPathfield.setText(CppCompiler.COMPILER_PATH);
+                compilerInterpreterargsfield.setText(CppCompiler.ARGS);
+                runcommandfield.setText(CppCompiler.RUN_COMMAND);
+                break;
             case "JAVA":
                 compilerPathfield.setText(JavaCompiler.COMPILER_PATH);
                 compilerInterpreterargsfield.setText(JavaCompiler.ARGS);
@@ -220,7 +226,21 @@ public class ConfigController implements Initializable {
             }
 
 
-        } else if (mychoiceBox.getSelectionModel().getSelectedItem() == "Python") {
+        }
+        else if (mychoiceBox.getSelectionModel().getSelectedItem() == "C++") {
+
+            runOutput = compileAndRunCpp(pathtextField.getText());
+            expectedOutput = compileAndRunCpp(expectedOutcomepathfield.getText());
+
+            if (runOutput.equals(expectedOutput)) {
+                result = "Correct";
+            } else {
+                result = "Incorrect";
+            }
+
+
+        }
+        else if (mychoiceBox.getSelectionModel().getSelectedItem() == "Python") {
 
             runOutput = runPythonInterpreter(pathtextField.getText());
             expectedOutput = runPythonInterpreter(expectedOutcomepathfield.getText());
@@ -317,6 +337,32 @@ public class ConfigController implements Initializable {
             e.printStackTrace();
         }
         return "-3";
+
+    }
+
+    @FXML
+    public String compileAndRunCpp(String filePath) {
+
+
+        File workingDirectory = new File(filePath);
+
+        CppCompiler cppCompiler = new CppCompiler(workingDirectory);
+
+        try {
+            Result compileResult = cppCompiler.compile(compilerPathfield.getText(), compilerInterpreterargsfield.getText());
+
+
+            if (compileResult.getStatus() == 0) {
+                Result runResult = cppCompiler.run(workingDirectory + runcommandfield.getText(), "");
+
+
+                return runResult.getOutput();
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "-4";
 
     }
 

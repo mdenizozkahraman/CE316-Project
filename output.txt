@@ -1,4 +1,4 @@
 Standard output:
-Hello, World! C 
+hello world java
 
 Standard error:
