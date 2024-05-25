@@ -1,4 +1,4 @@
 Standard output:
-hello world java
+hello python expected!!
 
 Standard error:

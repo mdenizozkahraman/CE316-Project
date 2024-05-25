@@ -94,8 +94,6 @@ public class ConfigController implements Initializable {
 
         });
 
-
-
         refreshButton.setOnAction(actionEvent -> {
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("createProject.fxml"));
@@ -111,24 +109,19 @@ public class ConfigController implements Initializable {
 
         });
 
-
-
         okeyButton.setOnAction(actionEvent -> {
 
             Path path = Paths.get(pathtextField.getText());
 
-
             try {
                 ResultSceneClass result = runButtonClicked();
-                Main.showResultScene(path.getFileName().toString(),result.getRunOutput(),result.getExpectedOutput(),result.getResult());
+                Main.showResultScene(path.getFileName().toString(), result.getRunOutput(), result.getExpectedOutput(), result.getResult());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         });
-
-
-
     }
+
     public static void showHelp(String content, String header) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("HELP");
@@ -172,9 +165,8 @@ public class ConfigController implements Initializable {
         }
     }
 
-
+    @FXML
     public void choiceBoxChanged(ActionEvent event) {
-
 
         String selectedLanguage = mychoiceBox.getSelectionModel().getSelectedItem();
 
@@ -210,102 +202,72 @@ public class ConfigController implements Initializable {
         String runOutput = null;
         String expectedOutput = null;
         String result = null;
+        String path = pathtextField.getText();
+        String expectedPath = expectedOutcomepathfield.getText();
 
+        List<String> extractedFolders = new ArrayList<>();
+            ZipExtractor zipExtractor = new ZipExtractor();
+            extractedFolders = zipExtractor.extract(path);
 
-        if (mychoiceBox.getSelectionModel().getSelectedItem() == "C") {
-
-            runOutput = compileAndRunC(pathtextField.getText());
-            expectedOutput = compileAndRunC(expectedOutcomepathfield.getText());
-
-            if (runOutput.equals(expectedOutput)) {
-                result = "Correct";
-            } else {
-                result = "Incorrect";
-            }
-
-
-        }
-        else if (mychoiceBox.getSelectionModel().getSelectedItem() == "C++") {
-
-            runOutput = compileAndRunCpp(pathtextField.getText());
-            expectedOutput = compileAndRunCpp(expectedOutcomepathfield.getText());
-
-            if (runOutput.equals(expectedOutput)) {
-                result = "Correct";
-            } else {
-                result = "Incorrect";
-            }
-
-
-        }
-        else if (mychoiceBox.getSelectionModel().getSelectedItem() == "Python") {
-
-            runOutput = runPythonInterpreter(pathtextField.getText());
-            expectedOutput = runPythonInterpreter(expectedOutcomepathfield.getText());
-
-            if (runOutput.equals(expectedOutput)) {
-                result = "Correct";
-            } else {
-                result = "Incorrect";
-            }
+        switch (mychoiceBox.getSelectionModel().getSelectedItem()) {
+            case "C":
+                runOutput = compileAndRunC(adjustPath(path, extractedFolders));
+                expectedOutput = compileAndRunC(expectedPath);
+                break;
+            case "C++":
+                runOutput = compileAndRunCpp(adjustPath(path, extractedFolders));
+                expectedOutput = compileAndRunCpp(expectedPath);
+                break;
+            case "Python":
+                runOutput = runPythonInterpreter(adjustPath(path, extractedFolders));
+                expectedOutput = runPythonInterpreter(expectedPath);
+                break;
+            case "JAVA":
+                runOutput = compileAndRunJava(adjustPath(path, extractedFolders));
+                expectedOutput = compileAndRunJava(expectedPath);
+                break;
+            default:
+                throw new UnsupportedOperationException("Unsupported language selected");
         }
 
-        else if (mychoiceBox.getSelectionModel().getSelectedItem() == "JAVA") {
+        result = runOutput.equals(expectedOutput) ? "Correct" : "Incorrect";
 
-            runOutput = compileAndRunJava(pathtextField.getText() + "\\20210602031");
-            expectedOutput = compileAndRunJava(expectedOutcomepathfield.getText());
+        return new ResultSceneClass(path, runOutput, expectedOutput, result);
+    }
 
-            if (runOutput.equals(expectedOutput)) {
-                result = "Correct";
-            } else {
-                result = "Incorrect";
-            }
+    private String adjustPath(String path, List<String> extractedFolders) {
+        // Automatically append the first extracted folder name for Java
+        if (extractedFolders.isEmpty()) {
+            throw new IllegalArgumentException("No folders found in the extracted zip files.");
         }
-        return new ResultSceneClass(pathtextField.getText(),runOutput, expectedOutput, result);
+        return path + "\\" + extractedFolders.get(0);
     }
 
     @FXML
     public String runPythonInterpreter(String filePath) {
-        /*ZipExtractor zipExtractor = new ZipExtractor();
-        zipExtractor.extract(pathtextField.getText());*/
-
         File workingDirectory = new File(filePath);
-
         PythonInterpreter pythonInterpreter = new PythonInterpreter(workingDirectory);
 
         try {
             Result runResult = pythonInterpreter.run(compilerPathfield.getText(), compilerInterpreterargsfield.getText());
-
-
             return runResult.getOutput();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
-
         return "-1";
     }
 
     @FXML
     public String compileAndRunJava(String filePath) {
-        ZipExtractor zipExtractor = new ZipExtractor();
-        zipExtractor.extract(pathtextField.getText());
-
         File workingDirectory = new File(filePath);
         JavaCompiler javaCompiler = new JavaCompiler(workingDirectory);
 
         try {
             Result compileResult = javaCompiler.compile(compilerPathfield.getText(), compilerInterpreterargsfield.getText());
 
-
             if (compileResult.getStatus() == 0) {
                 Result runResult = javaCompiler.run(runcommandfield.getText(), "");
-
-
                 return runResult.getOutput();
-
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -315,66 +277,45 @@ public class ConfigController implements Initializable {
 
     @FXML
     public String compileAndRunC(String filePath) {
-        /*ZipExtractor zipExtractor = new ZipExtractor();
-        zipExtractor.extract(pathtextField.getText());*/
-
-
         File workingDirectory = new File(filePath);
-
         CCompiler cCompiler = new CCompiler(workingDirectory);
 
         try {
             Result compileResult = cCompiler.compile(compilerPathfield.getText(), compilerInterpreterargsfield.getText());
 
-
             if (compileResult.getStatus() == 0) {
                 Result runResult = cCompiler.run(workingDirectory + runcommandfield.getText(), "");
-
-
                 return runResult.getOutput();
-
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return "-3";
-
     }
 
     @FXML
     public String compileAndRunCpp(String filePath) {
-        /*ZipExtractor zipExtractor = new ZipExtractor();
-        zipExtractor.extract(pathtextField.getText());*/
-
         File workingDirectory = new File(filePath);
-
         CppCompiler cppCompiler = new CppCompiler(workingDirectory);
 
         try {
             Result compileResult = cppCompiler.compile(compilerPathfield.getText(), compilerInterpreterargsfield.getText());
 
-
             if (compileResult.getStatus() == 0) {
                 Result runResult = cppCompiler.run(workingDirectory + runcommandfield.getText(), "");
-
-
                 return runResult.getOutput();
-
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return "-4";
-
     }
 
     public void json() {
         String folderPath = "JSONFiles";
-
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
-
             String jsonFileName = "JsonFile_" + System.currentTimeMillis() + ".json";
             String jsonFilePath = folderPath + File.separator + jsonFileName;
 
@@ -403,18 +344,15 @@ public class ConfigController implements Initializable {
             e.printStackTrace();
         }
     }
+
     @FXML
     public void loadSelectedJson(ActionEvent event) {
-
         String selectedJsonFileName = savesChoiceBox.getSelectionModel().getSelectedItem();
-
-
         String selectedJsonFilePath = "JSONFiles" + File.separator + selectedJsonFileName;
 
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             JsonNode rootNode = objectMapper.readTree(new File(selectedJsonFilePath));
-
 
             String language = rootNode.path("Requirements").path(0).path("Language").asText();
             String chooseFile = rootNode.path("Requirements").path(0).path("chooseFile").asText();
@@ -422,7 +360,6 @@ public class ConfigController implements Initializable {
             String interpreterArgs = rootNode.path("Requirements").path(0).path("compiler").asText();
             String runCommand = rootNode.path("Requirements").path(0).path("runCommand").asText();
             String expected = rootNode.path("Requirements").path(0).path("expected").asText();
-
 
             mychoiceBox.getSelectionModel().select(language);
             pathtextField.setText(chooseFile);
@@ -435,8 +372,6 @@ public class ConfigController implements Initializable {
             e.printStackTrace();
         }
     }
-
-
 
     @FXML
     public void clearJson() {
@@ -470,11 +405,4 @@ public class ConfigController implements Initializable {
             e.printStackTrace();
         }
     }
-
-
-
 }
-
-
-
-
