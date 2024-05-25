@@ -17,26 +17,6 @@ public class HWSubmission {
         this.expected = expected;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public String getOutput() {
-        return output;
-    }
-
-    public String getResult() {
-        return result;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public String getError() {
-        return error;
-    }
-
     public String getExpected() {
         return expected;
     }

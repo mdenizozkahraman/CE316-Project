@@ -7,7 +7,6 @@ import java.io.*;
 
 public abstract class Compiler {
 
-
     protected final File workingDirectory;
 
     public Compiler(File workingDirectory) {

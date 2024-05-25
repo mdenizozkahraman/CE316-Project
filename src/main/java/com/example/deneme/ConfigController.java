@@ -252,7 +252,7 @@ public class ConfigController implements Initializable {
 
         else if (mychoiceBox.getSelectionModel().getSelectedItem() == "JAVA") {
 
-            runOutput = compileAndRunJava(pathtextField.getText() + "\\20200602098");
+            runOutput = compileAndRunJava(pathtextField.getText() + "\\20210602031");
             expectedOutput = compileAndRunJava(expectedOutcomepathfield.getText());
 
             if (runOutput.equals(expectedOutput)) {

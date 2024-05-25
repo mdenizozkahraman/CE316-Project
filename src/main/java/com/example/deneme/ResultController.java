@@ -28,7 +28,6 @@ public class ResultController implements Initializable {
     @FXML
     private Button helpButton2;
 
-
     @FXML
     private TableColumn<ResultSceneClass, String> result;
 
