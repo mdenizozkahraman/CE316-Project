@@ -31,6 +31,7 @@ import java.util.ResourceBundle;
 public class ConfigController implements Initializable {
     public ConfigController() {
     }
+
     @FXML
     private TextField pathtextField;
     @FXML
@@ -52,7 +53,7 @@ public class ConfigController implements Initializable {
     @FXML
     private TextField expectedOutcomepathfield;
     @FXML
-    private String[] langugages = {"C", "C++" ,"Python", "JAVA"};
+    private String[] langugages = {"C", "C++", "Python", "JAVA"};
 
     public static String[] getFilenames(String directoryPath) {
         File directory = new File(directoryPath);
@@ -89,11 +90,9 @@ public class ConfigController implements Initializable {
                     "When you press the \"Run\" button, a new window will open displaying information about the relevant folder, the file output, the expected output, and the result.";
 
             ConfigController.showHelp(helpTXT, "Help");
-
         });
 
         refreshButton.setOnAction(actionEvent -> {
-
             FXMLLoader loader = new FXMLLoader(getClass().getResource("createProject.fxml"));
             Parent root = null;
             try {
@@ -104,25 +103,23 @@ public class ConfigController implements Initializable {
             Scene scene = new Scene(root);
             Stage stage = (Stage) refreshButton.getScene().getWindow();
             stage.setScene(scene);
-
         });
 
         okeyButton.setOnAction(actionEvent -> {
-
             try {
-                ResultSceneClass result = runButtonClicked();
-                int lastIndex = result.getPath().lastIndexOf("\\");
-                String path = result.getPath().substring(lastIndex + 1);
-
-                saveResultToJson(path, result.getRunOutput(), result.getExpectedOutput(), result.getResult());
-
-                Main.showResultScene(path, result.getRunOutput(), result.getExpectedOutput(), result.getResult());
-
+                List<ResultSceneClass> results = runButtonClicked();
+                for (ResultSceneClass result : results) {
+                    int lastIndex = result.getPath().lastIndexOf("\\");
+                    String path = result.getPath().substring(lastIndex + 1);
+                    saveResultToJson(path, result.getRunOutput(), result.getExpectedOutput(), result.getResult());
+                    Main.showResultScene(path, result.getRunOutput(), result.getExpectedOutput(), result.getResult());
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         });
     }
+
     public static void showHelp(String content, String header) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("HELP");
@@ -130,6 +127,7 @@ public class ConfigController implements Initializable {
         alert.setContentText(content);
         alert.showAndWait();
     }
+
     @FXML
     public void pathDirectoryChooser(ActionEvent event) {
         Node source = (Node) event.getSource();
@@ -146,6 +144,7 @@ public class ConfigController implements Initializable {
             System.out.println("No directory selected");
         }
     }
+
     @FXML
     public void expectedDirectoryChooser(ActionEvent event) {
         Node source = (Node) event.getSource();
@@ -162,9 +161,9 @@ public class ConfigController implements Initializable {
             System.out.println("No directory selected");
         }
     }
+
     @FXML
     public void choiceBoxChanged(ActionEvent event) {
-
         String selectedLanguage = mychoiceBox.getSelectionModel().getSelectedItem();
 
         switch (selectedLanguage) {
@@ -187,14 +186,15 @@ public class ConfigController implements Initializable {
                 compilerPathfield.setText(PythonInterpreter.COMPILER_PATH);
                 compilerInterpreterargsfield.setText(PythonInterpreter.ARGS);
                 runcommandfield.setText("");
-
                 break;
             default:
                 break;
         }
     }
+
     @FXML
-    public ResultSceneClass runButtonClicked() throws IOException {
+    public List<ResultSceneClass> runButtonClicked() throws IOException {
+        List<ResultSceneClass> results = new ArrayList<>();
         String runOutput = null;
         String expectedOutput = null;
         String result = null;
@@ -202,43 +202,39 @@ public class ConfigController implements Initializable {
         String expectedPath = expectedOutcomepathfield.getText();
 
         List<String> extractedFolders = new ArrayList<>();
-            ZipExtractor zipExtractor = new ZipExtractor();
-            extractedFolders = zipExtractor.extract(path);
+        ZipExtractor zipExtractor = new ZipExtractor();
+        extractedFolders = zipExtractor.extract(path);
 
+        for (String folder : extractedFolders) {
+            switch (mychoiceBox.getSelectionModel().getSelectedItem()) {
+                case "C":
+                    runOutput = compileAndRunC(adjustPath(path, folder));
+                    expectedOutput = compileAndRunC(expectedPath);
+                    break;
+                case "C++":
+                    runOutput = compileAndRunCpp(adjustPath(path, folder));
+                    expectedOutput = compileAndRunCpp(expectedPath);
+                    break;
+                case "Python":
+                    runOutput = runPythonInterpreter(adjustPath(path, folder));
+                    expectedOutput = runPythonInterpreter(expectedPath);
+                    break;
+                case "JAVA":
+                    runOutput = compileAndRunJava(adjustPath(path, folder));
+                    expectedOutput = compileAndRunJava(expectedPath);
+                    break;
+                default:
+                    throw new UnsupportedOperationException("Unsupported language selected");
+            }
 
-        switch (mychoiceBox.getSelectionModel().getSelectedItem()) {
-            case "C":
-                runOutput = compileAndRunC(adjustPath(path, extractedFolders));
-                expectedOutput = compileAndRunC(expectedPath);
-                break;
-            case "C++":
-                runOutput = compileAndRunCpp(adjustPath(path, extractedFolders));
-                expectedOutput = compileAndRunCpp(expectedPath);
-                break;
-            case "Python":
-                runOutput = runPythonInterpreter(adjustPath(path, extractedFolders));
-                expectedOutput = runPythonInterpreter(expectedPath);
-                break;
-            case "JAVA":
-                runOutput = compileAndRunJava(adjustPath(path, extractedFolders));
-                expectedOutput = compileAndRunJava(expectedPath);
-                break;
-            default:
-                throw new UnsupportedOperationException("Unsupported language selected");
+            result = runOutput.equals(expectedOutput) ? "Correct" : "Incorrect";
+            results.add(new ResultSceneClass(adjustPath(path, folder), runOutput, expectedOutput, result));
         }
-
-        result = runOutput.equals(expectedOutput) ? "Correct" : "Incorrect";
-
-        path = adjustPath(path, extractedFolders);
-
-        return new ResultSceneClass(path, runOutput, expectedOutput, result);
+        return results;
     }
 
-    private String adjustPath(String path, List<String> extractedFolders) {
-        if (extractedFolders.isEmpty()) {
-            throw new IllegalArgumentException("No folders found in the extracted zip files.");
-        }
-        return path + "\\" + extractedFolders.get(0);
+    private String adjustPath(String path, String folder) {
+        return path + "\\" + folder;
     }
 
     @FXML
@@ -407,7 +403,6 @@ public class ConfigController implements Initializable {
     @FXML
     public void clearJson() {
         String selectedJsonFileName = savesChoiceBox.getSelectionModel().getSelectedItem();
-
         String selectedJsonFilePath = "JSONFiles" + File.separator + selectedJsonFileName;
 
         try {
