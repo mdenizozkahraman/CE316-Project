@@ -6,11 +6,11 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.deneme.MainController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #838B83;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.deneme.MainController">
     <top>
-        <Label text="Integrated Assignment Environment" BorderPane.alignment="CENTER">
+        <Label prefHeight="39.0" prefWidth="469.0" text="Integrated Assignment Environment" textAlignment="CENTER" textFill="#e8e0a7" BorderPane.alignment="CENTER">
             <font>
-                <Font size="24.0" />
+                <Font name="System Bold" size="27.0" />
             </font>
             <BorderPane.margin>
                 <Insets top="20.0" />
@@ -18,17 +18,17 @@
         </Label>
     </top>
     <left>
-        <Button fx:id="createNewButton" mnemonicParsing="false" prefWidth="100.0" text="CreateProject" BorderPane.alignment="CENTER">
+        <Button fx:id="createNewButton" mnemonicParsing="false" prefWidth="129.0" style="-fx-background-color: #e8e0a7;" text="Create Project" BorderPane.alignment="CENTER">
             <BorderPane.margin>
                 <Insets left="30.0" />
             </BorderPane.margin>
         </Button>
     </left>
     <center>
-        <Button fx:id="helpButton" mnemonicParsing="false" prefWidth="100.0" text="Help" BorderPane.alignment="CENTER" />
+        <Button fx:id="helpButton" mnemonicParsing="false" prefWidth="100.0" style="-fx-background-color: #e8e0a7;" text="Help" BorderPane.alignment="CENTER" />
     </center>
     <right>
-        <Button fx:id="exitButton" mnemonicParsing="false" prefWidth="100.0" text="Exit" BorderPane.alignment="CENTER">
+        <Button fx:id="exitButton" mnemonicParsing="false" prefWidth="100.0" style="-fx-background-color: #e8e0a7;" text="Exit" BorderPane.alignment="CENTER">
             <BorderPane.margin>
                 <Insets left="20.0" right="30.0" />
             </BorderPane.margin>
