@@ -1,5 +1,5 @@
-
 package com.example.deneme;
+
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,7 +18,6 @@ public class MainController implements Initializable {
     private Button helpButton;
     @FXML
     private Button exitButton;
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         createNewButton.setOnAction(actionEvent -> {
@@ -28,19 +27,14 @@ public class MainController implements Initializable {
             }
         });
 
-
         helpButton.setOnAction(actionEvent -> {
             String helpTXT = "To use the Integrated Assignment Environment (IAE) software, follow these steps: \n\n When you click on the \"Create Project\" button, a new window will open with various configuration settings.";
 
             MainController.createHelp(helpTXT, "Help");
 
         });
-
-
             exitButton.setOnAction(actionEvent -> Platform.exit());
     }
-
-
     public static void createHelp(String content, String header) {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("HELP");
@@ -48,7 +42,4 @@ public class MainController implements Initializable {
         alert.setContentText(content);
         alert.showAndWait();
     }
-
-
-
 }

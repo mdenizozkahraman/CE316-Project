@@ -1,29 +1,16 @@
 package com.example.deneme;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import java.io.IOException;
-import java.util.Stack;
-
 
 public class Main extends Application {
-    private Parent root;
-    private Stage stage;
-    private Scene scene;
-    private Stack<Scene> sceneStack;
-
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -61,11 +48,6 @@ public class Main extends Application {
         resultSceneStage.setScene(scene);
         resultSceneStage.showAndWait();
     }
-
-
-
-
-
 
     public static void main(String[] args) {
         launch();

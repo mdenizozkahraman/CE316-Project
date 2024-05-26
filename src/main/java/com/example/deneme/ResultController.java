@@ -8,7 +8,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -36,7 +35,6 @@ public class ResultController implements Initializable {
     @FXML
     private TableColumn<ResultSceneClass, String> result;
 
-
     ObservableList<ResultSceneClass> resultsList = FXCollections.observableArrayList();
 
     @Override
@@ -50,14 +48,13 @@ public class ResultController implements Initializable {
 
         helpButton2.setOnAction(actionEvent -> {
             String helpTXT = "The \"ID\" column, which is the first of the four columns you see in this window, gives the student number, the \"OUTPUT\" column gives the outputs of the code, the \"EXPECTED OUTCOME\" column gives the actual output that the code should give, and the \"RESULT\" column gives the result of comparing the expected output with the student output." +
-                     "If two values are the same, it displays \"true\"; if they are different, it displays \"false\".";
+                     "If two values are the same, it displays \"Correct\"; if they are different, it displays \"Incorrect\".";
 
             ResultController.help(helpTXT, "Help");
 
         });
 
         showAllResults();
-
 
     }
     public static void help(String content, String header) {

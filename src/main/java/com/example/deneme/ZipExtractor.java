@@ -39,7 +39,6 @@ public class ZipExtractor {
                                     fileOutputStream.write(buffer, 0, length);
                                 }
                             }
-                            // Add parent directory to the list of extracted folders if not already present
                             if (!extractedFolders.contains(parentDir.getName())) {
                                 extractedFolders.add(parentDir.getName());
                             }

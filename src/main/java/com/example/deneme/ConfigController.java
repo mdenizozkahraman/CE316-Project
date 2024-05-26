@@ -18,24 +18,19 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import javax.swing.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class ConfigController implements Initializable {
-
     public ConfigController() {
     }
-
     @FXML
     private TextField pathtextField;
     @FXML
@@ -56,9 +51,6 @@ public class ConfigController implements Initializable {
     private TextField runcommandfield;
     @FXML
     private TextField expectedOutcomepathfield;
-
-
-
     @FXML
     private String[] langugages = {"C", "C++" ,"Python", "JAVA"};
 
@@ -117,8 +109,6 @@ public class ConfigController implements Initializable {
 
         okeyButton.setOnAction(actionEvent -> {
 
-
-
             try {
                 ResultSceneClass result = runButtonClicked();
                 int lastIndex = result.getPath().lastIndexOf("\\");
@@ -132,48 +122,7 @@ public class ConfigController implements Initializable {
                 throw new RuntimeException(e);
             }
         });
-
-//        okeyButton.setOnAction(actionEvent -> {
-//
-//
-//            try {
-//                ResultSceneClass result = runButtonClicked();
-//                int lastIndex = result.getPath().lastIndexOf("\\");
-//                String path = result.getPath().substring(lastIndex + 1);
-//                Main.showResultScene(path, result.getRunOutput(), result.getExpectedOutput(), result.getResult());
-//                // saveResultToJson(path, result.getRunOutput(), result.getExpectedOutput(), result.getResult());
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-//        });
-//
-//        showAllResultsButton.setOnAction(actionEvent -> {
-//            try {
-//                // results.json dosyasını oku ve içeriğini al
-//                String content = new String(Files.readAllBytes(Paths.get("results.json")));
-//                // JSON dizisi oluştur
-//                JSONArray jsonArray = new JSONArray(content);
-//
-//                // Her bir kayıt için
-//                for (int i = 0; i < jsonArray.length(); i++) {
-//                    // Kaydı al
-//                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-//                    // Kaydın parametrelerini al
-//                    String path = jsonObject.getString("path");
-//                    String runOutput = jsonObject.getString("runOutput");
-//                    String expectedOutput = jsonObject.getString("expectedOutput");
-//                    String result = jsonObject.getString("result");
-//
-//                    // Sonuç ekranını göster
-//                    Main.showResultScene(path, runOutput, expectedOutput, result);
-//                }
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        });
-
     }
-
     public static void showHelp(String content, String header) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("HELP");
@@ -181,7 +130,6 @@ public class ConfigController implements Initializable {
         alert.setContentText(content);
         alert.showAndWait();
     }
-
     @FXML
     public void pathDirectoryChooser(ActionEvent event) {
         Node source = (Node) event.getSource();
@@ -197,9 +145,7 @@ public class ConfigController implements Initializable {
         } else {
             System.out.println("No directory selected");
         }
-
     }
-
     @FXML
     public void expectedDirectoryChooser(ActionEvent event) {
         Node source = (Node) event.getSource();
@@ -216,7 +162,6 @@ public class ConfigController implements Initializable {
             System.out.println("No directory selected");
         }
     }
-
     @FXML
     public void choiceBoxChanged(ActionEvent event) {
 
@@ -248,7 +193,6 @@ public class ConfigController implements Initializable {
                 break;
         }
     }
-
     @FXML
     public ResultSceneClass runButtonClicked() throws IOException {
         String runOutput = null;
