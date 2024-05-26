@@ -76,7 +76,7 @@
                 <TextField fx:id="runcommandfield" layoutX="190.0" layoutY="132.0" prefHeight="25.0" prefWidth="194.0" />
                 <Label layoutX="14.0" layoutY="169.0" text="Expected Outcome Directory" />
                 <TextField fx:id="expectedOutcomepathfield" layoutX="190.0" layoutY="164.0" prefHeight="26.0" prefWidth="194.0" />
-                <Button fx:id="expectedoutcomeChooser" layoutX="394.0" layoutY="132.0" mnemonicParsing="false" onAction="#expectedDirectoryChooser" prefHeight="26.0" prefWidth="19.0" text="Button" />
+                <Button fx:id="expectedoutcomeChooser" layoutX="394.0" layoutY="164.0" mnemonicParsing="false" onAction="#expectedDirectoryChooser" text="..." />
                 <Button fx:id="helpBtn" layoutX="507.0" layoutY="204.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="53.0" style="-fx-background-color: #e8e0a7;" text="Help" />
             </children>
         </AnchorPane>

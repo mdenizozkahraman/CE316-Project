@@ -1,6 +1,13 @@
 package com.example.deneme;
 
-import com.example.deneme.Compilers.*;
+import com.example.deneme.Compilers.CCompiler;
+import com.example.deneme.Compilers.CppCompiler;
+import com.example.deneme.Compilers.JavaCompiler;
+import com.example.deneme.Compilers.PythonInterpreter;
+import com.example.deneme.Main;
+import com.example.deneme.Result;
+import com.example.deneme.ResultSceneClass;
+import com.example.deneme.ZipExtractor;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -18,6 +25,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -53,13 +61,13 @@ public class ConfigController implements Initializable {
     @FXML
     private TextField expectedOutcomepathfield;
     @FXML
-    private String[] langugages = {"C", "C++", "Python", "JAVA"};
+    private String[] languages = {"C", "C++", "Python", "JAVA"};
 
     public static String[] getFilenames(String directoryPath) {
         File directory = new File(directoryPath);
 
         if (!directory.exists() || !directory.isDirectory()) {
-            return null;
+            return new String[0];
         }
 
         File[] files = directory.listFiles();
@@ -73,15 +81,20 @@ public class ConfigController implements Initializable {
         return filenames;
     }
 
-    private String[] files = getFilenames("JSONFiles");
+    private String[] files;
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-        mychoiceBox.getItems().addAll(langugages);
+        mychoiceBox.getItems().addAll(languages);
         mychoiceBox.getSelectionModel().selectFirst();
 
+        // Dosya isimlerini al ve ChoiceBox'a ekle
+        files = getFilenames("JSONFiles");
+        savesChoiceBox.getItems().clear();
         savesChoiceBox.getItems().addAll(files);
-        savesChoiceBox.getSelectionModel().selectFirst();
+        if (files.length > 0) {
+            savesChoiceBox.getSelectionModel().selectFirst();
+        }
 
         helpBtn.setOnAction(actionEvent -> {
             String helpTXT = " In this window to save the current configuration, use the \"Save Configuration\" button located below. If you wish to delete the configuration, you can use the \"Delete Configuration\" button. " +
@@ -93,16 +106,15 @@ public class ConfigController implements Initializable {
         });
 
         refreshButton.setOnAction(actionEvent -> {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("createProject.fxml"));
-            Parent root = null;
             try {
-                root = loader.load();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/createProject.fxml"));
+                Parent root = loader.load();
+                Scene scene = new Scene(root);
+                Stage stage = (Stage) refreshButton.getScene().getWindow();
+                stage.setScene(scene);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) refreshButton.getScene().getWindow();
-            stage.setScene(scene);
         });
 
         okeyButton.setOnAction(actionEvent -> {
@@ -307,6 +319,13 @@ public class ConfigController implements Initializable {
 
     public void json() {
         String folderPath = "JSONFiles";
+        File directory = new File(folderPath);
+
+        // JSONFiles dizini yoksa oluştur
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
+
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
@@ -332,6 +351,10 @@ public class ConfigController implements Initializable {
             writer.writeValue(new File(jsonFilePath), jsonData);
 
             System.out.println("Added to JSON: " + data.toString());
+
+            // SavesChoiceBox'ı güncelle
+            savesChoiceBox.getItems().clear();
+            savesChoiceBox.getItems().addAll(getFilenames("JSONFiles"));
 
         } catch (IOException e) {
             e.printStackTrace();
