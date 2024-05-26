@@ -40,7 +40,6 @@ public class Main extends Application {
         Stage createProjectStage = new Stage();
         createProjectStage.setTitle("Create Project");
         createProjectStage.initModality(Modality.WINDOW_MODAL);
-        // createProjectStage.initOwner();
         Scene scene = new Scene(createProject);
         createProjectStage.setScene(scene);
         createProjectStage.showAndWait();

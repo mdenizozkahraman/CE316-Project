@@ -6,8 +6,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
 
@@ -31,6 +36,7 @@ public class ResultController implements Initializable {
     @FXML
     private TableColumn<ResultSceneClass, String> result;
 
+
     ObservableList<ResultSceneClass> resultsList = FXCollections.observableArrayList();
 
     @Override
@@ -49,6 +55,10 @@ public class ResultController implements Initializable {
             ResultController.help(helpTXT, "Help");
 
         });
+
+        showAllResults();
+
+
     }
     public static void help(String content, String header) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -62,5 +72,27 @@ public class ResultController implements Initializable {
         ResultSceneClass resultSceneClass = new ResultSceneClass(path, output, expectedOutput, result);
         resultsList.add(resultSceneClass);
     }
+
+    public void showAllResults() {
+        try {
+            String content = new String(Files.readAllBytes(Paths.get("results.json")));
+            JSONArray jsonArray = new JSONArray(content);
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String path = jsonObject.getString("path");
+                String runOutput = jsonObject.getString("runOutput");
+                String expectedOutput = jsonObject.getString("expectedOutput");
+                String result = jsonObject.getString("result");
+
+                ResultSceneClass resultSceneClass = new ResultSceneClass(path, runOutput, expectedOutput, result);
+                resultsList.add(resultSceneClass);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }
 

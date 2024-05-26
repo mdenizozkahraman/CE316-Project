@@ -4,6 +4,7 @@ module com.example.berkdeneme {
 
     requires com.fasterxml.jackson.databind;
     requires java.desktop;
+    requires org.json;
 
 
     opens com.example.deneme to javafx.fxml;

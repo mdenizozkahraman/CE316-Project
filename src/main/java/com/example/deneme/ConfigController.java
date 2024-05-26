@@ -16,11 +16,15 @@ import javafx.scene.control.*;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.swing.*;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -52,6 +56,8 @@ public class ConfigController implements Initializable {
     private TextField runcommandfield;
     @FXML
     private TextField expectedOutcomepathfield;
+
+
 
     @FXML
     private String[] langugages = {"C", "C++" ,"Python", "JAVA"};
@@ -111,15 +117,61 @@ public class ConfigController implements Initializable {
 
         okeyButton.setOnAction(actionEvent -> {
 
-            Path path = Paths.get(pathtextField.getText());
+
 
             try {
                 ResultSceneClass result = runButtonClicked();
-                Main.showResultScene(path.getFileName().toString(), result.getRunOutput(), result.getExpectedOutput(), result.getResult());
+                int lastIndex = result.getPath().lastIndexOf("\\");
+                String path = result.getPath().substring(lastIndex + 1);
+
+                saveResultToJson(path, result.getRunOutput(), result.getExpectedOutput(), result.getResult());
+
+                Main.showResultScene(path, result.getRunOutput(), result.getExpectedOutput(), result.getResult());
+
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         });
+
+//        okeyButton.setOnAction(actionEvent -> {
+//
+//
+//            try {
+//                ResultSceneClass result = runButtonClicked();
+//                int lastIndex = result.getPath().lastIndexOf("\\");
+//                String path = result.getPath().substring(lastIndex + 1);
+//                Main.showResultScene(path, result.getRunOutput(), result.getExpectedOutput(), result.getResult());
+//                // saveResultToJson(path, result.getRunOutput(), result.getExpectedOutput(), result.getResult());
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
+//        });
+//
+//        showAllResultsButton.setOnAction(actionEvent -> {
+//            try {
+//                // results.json dosyasını oku ve içeriğini al
+//                String content = new String(Files.readAllBytes(Paths.get("results.json")));
+//                // JSON dizisi oluştur
+//                JSONArray jsonArray = new JSONArray(content);
+//
+//                // Her bir kayıt için
+//                for (int i = 0; i < jsonArray.length(); i++) {
+//                    // Kaydı al
+//                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+//                    // Kaydın parametrelerini al
+//                    String path = jsonObject.getString("path");
+//                    String runOutput = jsonObject.getString("runOutput");
+//                    String expectedOutput = jsonObject.getString("expectedOutput");
+//                    String result = jsonObject.getString("result");
+//
+//                    // Sonuç ekranını göster
+//                    Main.showResultScene(path, runOutput, expectedOutput, result);
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        });
+
     }
 
     public static void showHelp(String content, String header) {
@@ -209,6 +261,7 @@ public class ConfigController implements Initializable {
             ZipExtractor zipExtractor = new ZipExtractor();
             extractedFolders = zipExtractor.extract(path);
 
+
         switch (mychoiceBox.getSelectionModel().getSelectedItem()) {
             case "C":
                 runOutput = compileAndRunC(adjustPath(path, extractedFolders));
@@ -232,11 +285,12 @@ public class ConfigController implements Initializable {
 
         result = runOutput.equals(expectedOutput) ? "Correct" : "Incorrect";
 
+        path = adjustPath(path, extractedFolders);
+
         return new ResultSceneClass(path, runOutput, expectedOutput, result);
     }
 
     private String adjustPath(String path, List<String> extractedFolders) {
-        // Automatically append the first extracted folder name for Java
         if (extractedFolders.isEmpty()) {
             throw new IllegalArgumentException("No folders found in the extracted zip files.");
         }
@@ -334,12 +388,45 @@ public class ConfigController implements Initializable {
 
             ((ObjectNode) jsonData).set("Requirements", objectMapper.valueToTree(infos));
 
-            // JSON dosyasını yaz
             ObjectWriter writer = objectMapper.writerWithDefaultPrettyPrinter();
             writer.writeValue(new File(jsonFilePath), jsonData);
 
             System.out.println("Added to JSON: " + data.toString());
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveResultToJson(String path, String runOutput, String expectedOutput, String result) {
+        String fileName = "results.json";
+        File file = new File(fileName);
+        JSONArray jsonArray;
+
+        if (file.exists()) {
+            try {
+                String content = new String(Files.readAllBytes(Paths.get(fileName)));
+                jsonArray = new JSONArray(content);
+            } catch (IOException e) {
+                jsonArray = new JSONArray();
+            }
+        } else {
+            jsonArray = new JSONArray();
+        }
+
+        int index = jsonArray.length();
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("index", index);
+        jsonObject.put("path", path);
+        jsonObject.put("runOutput", runOutput);
+        jsonObject.put("expectedOutput", expectedOutput);
+        jsonObject.put("result", result);
+
+        jsonArray.put(jsonObject);
+
+        try (FileWriter fileWriter = new FileWriter(fileName)) {
+            fileWriter.write(jsonArray.toString(4));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -375,14 +462,11 @@ public class ConfigController implements Initializable {
 
     @FXML
     public void clearJson() {
-        // Seçilen JSON dosyasının adını al
         String selectedJsonFileName = savesChoiceBox.getSelectionModel().getSelectedItem();
 
-        // Seçilen JSON dosyasının tam yolunu oluştur
         String selectedJsonFilePath = "JSONFiles" + File.separator + selectedJsonFileName;
 
         try {
-            // Seçilen JSON dosyasını sil
             File file = new File(selectedJsonFilePath);
             if (file.delete()) {
                 System.out.println("Selected JSON file has been deleted successfully.");
@@ -390,7 +474,6 @@ public class ConfigController implements Initializable {
                 System.out.println("Failed to delete the selected JSON file.");
             }
 
-            // UI'daki boşlukları temizle
             mychoiceBox.getSelectionModel().clearSelection();
             pathtextField.clear();
             compilerPathfield.clear();
@@ -398,7 +481,6 @@ public class ConfigController implements Initializable {
             runcommandfield.clear();
             expectedOutcomepathfield.clear();
 
-            // Silinen dosyayı ChoiceBox'tan da kaldır
             savesChoiceBox.getItems().remove(selectedJsonFileName);
 
         } catch (Exception e) {
